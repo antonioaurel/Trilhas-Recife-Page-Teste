@@ -124,7 +124,7 @@ d3.csv("lista-geral-do-mapeamento_code_try.csv", function(error, graph) {
     .enter().append("circle")
       .attr("r", 5)
       .attr("fill", function(d) { return color(d.Tipo); })
-       .on("click", function(d,i){ return showDetail(d)})
+       .on("click", function(d,i){ return showDetail(d,i)})
       .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)
@@ -182,13 +182,6 @@ function getInterconections(nodeName){
   return interconectionsArray;
 }
 
-function getNodeAndShowDetail(nodeName){
-  var node =  nodesArray.filter(function(x){
-    return x.Nome == nodeName;
-  })[0];
-  showDetail(node);
-}
-
 function showDetail(d){
   var rightDiv = document.getElementById('right');
   var rightDivString = "<h2 id='nodeTitle'>" + d.Nome + "</h2>" +
@@ -208,13 +201,11 @@ function showDetail(d){
                                     "<img id='interconectionImage' src='" + element.target.Imagem +"'>"+
                                 "</li>";
          interconectionsList.push(name)
-
     }
   });
   interconectionsDivString += "</ul>"
   interconectionsDiv.innerHTML = interconectionsDivString;
-
-
 }
+
 
 </script>
