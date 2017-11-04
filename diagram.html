@@ -96,7 +96,7 @@ var simulation = d3.forceSimulation()
 var linksArray = []
 var nodesArray = []
 
-d3.csv("lista-geral-do-mapeamento_code_try.csv", function(error, graph) {
+d3.csv("lista-geral-do-mapeamento.csv", function(error, graph) {
   if (error) throw error;
   nodesArray = graph;
   for (var i=0;i<graph.length;i++){
