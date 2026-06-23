@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix · Conexões da História</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: #0f1923;
+      color: #f0e6d3;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    header {
+      flex-shrink: 0;
+      background: #131d28;
+      border-bottom: 1px solid #1e2d3d;
+      padding: 0.65rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .back-link {
+      color: #6a7a8a;
+      text-decoration: none;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: #e8a838; }
+
+    .header-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .header-title span { color: #e8a838; }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.6rem 1.25rem;
+      background: #111b27;
+      border-bottom: 1px solid #1a2535;
+    }
+
+    #search {
+      background: #0f1923;
+      border: 1px solid #1e2d3d;
+      border-radius: 6px;
+      color: #f0e6d3;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.82rem;
+      padding: 0.4rem 0.75rem;
+      width: 240px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    #search::placeholder { color: #3a4a5a; }
+    #search:focus { border-color: #e8a838; }
+
+    .toolbar-stats {
+      font-size: 0.72rem;
+      color: #3a4a5a;
+    }
+
+    .toolbar-stats strong { color: #6a7a8a; }
+
+    .hover-info {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: #4a6a7a;
+      min-width: 300px;
+      text-align: right;
+    }
+
+    /* ── Workspace ── */
+    .workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    /* ── Canvas area ── */
+    .canvas-area {
+      flex: 1;
+      overflow: auto;
+      position: relative;
+      min-width: 0;
+      background: #0f1923;
+    }
+
+    .canvas-area::-webkit-scrollbar { width: 6px; height: 6px; }
+    .canvas-area::-webkit-scrollbar-track { background: #0a1018; }
+    .canvas-area::-webkit-scrollbar-thumb { background: #1e2d3d; border-radius: 3px; }
+
+    .canvas-wrap {
+      display: inline-block;
+      padding: 48px 0 0 120px; /* space for labels */
+      position: relative;
+    }
+
+    /* Column labels (rotated, along top) */
+    #col-labels {
+      position: absolute;
+      top: 0;
+      left: 120px;
+      height: 48px;
+      display: flex;
+      align-items: flex-end;
+      pointer-events: none;
+    }
+
+    .col-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 8px;
+      color: #2a3a4a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 46px;
+      line-height: 1;
+      cursor: default;
+      transition: color 0.1s;
+    }
+
+    .col-label.highlighted { color: #e8a838; font-weight: 600; }
+
+    /* Row labels (along left) */
+    #row-labels {
+      position: absolute;
+      top: 48px;
+      left: 0;
+      width: 118px;
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+    }
+
+    .row-label {
+      font-size: 8px;
+      color: #2a3a4a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 116px;
+      line-height: 1;
+      text-align: right;
+      padding-right: 4px;
+      cursor: default;
+      transition: color 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .row-label.highlighted { color: #e8a838; font-weight: 600; }
+
+    canvas#matrix {
+      display: block;
+      cursor: crosshair;
+      image-rendering: pixelated;
+    }
+
+    /* ── Tooltip ── */
+    #tooltip {
+      position: fixed;
+      background: rgba(10, 18, 26, 0.97);
+      border: 1px solid #1e2d3d;
+      border-radius: 5px;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.72rem;
+      color: #c0d0dc;
+      pointer-events: none;
+      display: none;
+      z-index: 100;
+      max-width: 260px;
+      line-height: 1.5;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
+
+    #tooltip .tt-row { color: #7aaabb; }
+    #tooltip .tt-col { color: #aabb7a; }
+    #tooltip .tt-conn { color: #e8a838; font-weight: 600; margin-top: 0.2rem; }
+
+    /* ── Right panel ── */
+    #panel {
+      width: 280px;
+      flex-shrink: 0;
+      background: #111b27;
+      border-left: 1px solid #1a2535;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-placeholder {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: #2a3a4a;
+      gap: 0.75rem;
+    }
+
+    .panel-placeholder p { font-size: 0.78rem; line-height: 1.65; }
+
+    #panel-content {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .pd-header {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #1a2535;
+      flex-shrink: 0;
+    }
+
+    .pd-type {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #e8a838;
+      margin-bottom: 0.35rem;
+    }
+
+    .pd-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f0e6d3;
+      line-height: 1.3;
+    }
+
+    .pd-local {
+      font-size: 0.7rem;
+      color: #3a6a7a;
+      margin-top: 0.25rem;
+    }
+
+    .pd-desc {
+      padding: 0.75rem 1rem;
+      font-size: 0.76rem;
+      line-height: 1.7;
+      color: #6a7a8a;
+      border-bottom: 1px solid #1a2535;
+      flex-shrink: 0;
+      max-height: 130px;
+      overflow-y: auto;
+    }
+
+    .pd-conn-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.65rem 0.9rem 1rem;
+    }
+
+    .pd-conn-list::-webkit-scrollbar { width: 3px; }
+    .pd-conn-list::-webkit-scrollbar-thumb { background: #1e2d3d; }
+
+    .pd-conn-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #2a3a4a;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid #1a2535;
+    }
+
+    .conn-item {
+      font-size: 0.76rem;
+      color: #7aaabb;
+      padding: 0.3rem 0.4rem;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.1s, border-color 0.1s;
+    }
+
+    .conn-item:hover {
+      background: rgba(232,168,56,0.07);
+      border-color: rgba(232,168,56,0.2);
+      color: #e8a838;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back-link" href="index.html">← Início</a>
+  <div class="header-title">Matrix · <span>Conexões da História</span></div>
+</header>
+
+<div class="toolbar">
+  <input id="search" type="text" placeholder="Buscar nó (ex: Ariano Suassuna)…" autocomplete="off">
+  <div class="toolbar-stats" id="stats">Carregando…</div>
+  <div class="hover-info" id="hover-info">Passe o mouse sobre a matrix para ver as conexões</div>
+</div>
+
+<div class="workspace">
+  <div class="canvas-area" id="canvas-area">
+    <div class="canvas-wrap" id="canvas-wrap">
+      <div id="col-labels"></div>
+      <div id="row-labels"></div>
+      <canvas id="matrix"></canvas>
+    </div>
+  </div>
+
+  <div id="panel">
+    <div class="panel-placeholder" id="panel-placeholder">
+      <p>Clique em uma célula ou linha da matrix para ver os detalhes do nó.</p>
+    </div>
+    <div id="panel-content"></div>
+  </div>
+</div>
+
+<div id="tooltip"></div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var CELL = 5;
+var names = [], nodeData = {}, adjMatrix, N;
+var selectedRow = -1;
+var hoverRow = -1, hoverCol = -1;
+
+var canvas  = document.getElementById('matrix');
+var ctx     = canvas.getContext('2d');
+var tooltip = document.getElementById('tooltip');
+
+// ── Load data ──────────────────────────────────────────────────────────────
+d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
+  if (error) { console.error(error); return; }
+
+  names = graph.map(function(r) { return r.Nome; });
+  N = names.length;
+
+  var nameIndex = {};
+  names.forEach(function(n, i) {
+    nameIndex[n] = i;
+    nodeData[n] = graph[i];
+  });
+
+  adjMatrix = new Uint8Array(N * N);
+
+  graph.forEach(function(row) {
+    var i = nameIndex[row.Nome];
+    Object.keys(row).forEach(function(k) {
+      if (k.startsWith('Intercon') && row[k].trim() !== '') {
+        var j = nameIndex[row[k].trim()];
+        if (j !== undefined) {
+          adjMatrix[i * N + j] = 1;
+          adjMatrix[j * N + i] = 1;
+        }
+      }
+    });
+  });
+
+  var connCount = 0;
+  for (var x = 0; x < adjMatrix.length; x++) { if (adjMatrix[x]) connCount++; }
+  connCount = connCount / 2;
+
+  document.getElementById('stats').innerHTML =
+    '<strong>' + N + '</strong> nós &nbsp;·&nbsp; <strong>' + connCount + '</strong> conexões únicas';
+
+  buildLabels();
+  drawMatrix();
+});
+
+// ── Build axis labels ───────────────────────────────────────────────────────
+function buildLabels() {
+  canvas.width  = N * CELL;
+  canvas.height = N * CELL;
+
+  var colWrap = document.getElementById('col-labels');
+  var rowWrap = document.getElementById('row-labels');
+
+  names.forEach(function(name, i) {
+    var c = document.createElement('div');
+    c.className = 'col-label';
+    c.id = 'cl-' + i;
+    c.title = name;
+    c.style.width = CELL + 'px';
+    c.textContent = name;
+    colWrap.appendChild(c);
+
+    var r = document.createElement('div');
+    r.className = 'row-label';
+    r.id = 'rl-' + i;
+    r.title = name;
+    r.style.height = CELL + 'px';
+    r.textContent = name;
+    rowWrap.appendChild(r);
+  });
+}
+
+// ── Draw canvas ─────────────────────────────────────────────────────────────
+function drawMatrix(highlightIdx) {
+  ctx.fillStyle = '#0f1923';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Draw all connections
+  for (var i = 0; i < N; i++) {
+    for (var j = 0; j < N; j++) {
+      if (!adjMatrix[i * N + j]) continue;
+
+      if (highlightIdx !== undefined && (i === highlightIdx || j === highlightIdx)) {
+        ctx.fillStyle = '#f0bc50';
+      } else {
+        ctx.fillStyle = '#e8a838';
+      }
+      ctx.fillRect(j * CELL, i * CELL, CELL - 1, CELL - 1);
+    }
+  }
+
+  // Highlight selected row/col overlay
+  if (highlightIdx !== undefined) {
+    ctx.fillStyle = 'rgba(232, 168, 56, 0.07)';
+    ctx.fillRect(0, highlightIdx * CELL, canvas.width, CELL);
+    ctx.fillRect(highlightIdx * CELL, 0, CELL, canvas.height);
+  }
+
+  // Diagonal
+  if (highlightIdx !== undefined) {
+    ctx.fillStyle = 'rgba(240,188,80,0.3)';
+    ctx.fillRect(highlightIdx * CELL, highlightIdx * CELL, CELL - 1, CELL - 1);
+  }
+}
+
+// ── Mouse interactions ──────────────────────────────────────────────────────
+canvas.addEventListener('mousemove', function(e) {
+  var rect = canvas.getBoundingClientRect();
+  var scaleX = canvas.width  / rect.width;
+  var scaleY = canvas.height / rect.height;
+  var col = Math.floor((e.clientX - rect.left)  * scaleX / CELL);
+  var row = Math.floor((e.clientY - rect.top)   * scaleY / CELL);
+
+  if (col < 0 || col >= N || row < 0 || row >= N) {
+    hideTooltip(); return;
+  }
+
+  hoverRow = row; hoverCol = col;
+  var connected = adjMatrix[row * N + col] === 1;
+  var same = row === col;
+
+  document.getElementById('hover-info').textContent =
+    names[row] + '  →  ' + names[col] + (connected ? '  ✓' : '');
+
+  tooltip.style.display = 'block';
+  tooltip.style.left = (e.clientX + 16) + 'px';
+  tooltip.style.top  = (e.clientY - 12) + 'px';
+  tooltip.innerHTML =
+    '<div class="tt-row">↓ ' + names[row] + '</div>' +
+    '<div class="tt-col">→ ' + names[col] + '</div>' +
+    (same       ? '' :
+     connected  ? '<div class="tt-conn">✓ Conectados</div>'
+                : '<div style="color:#2a3a4a;margin-top:0.2rem;">Sem conexão</div>');
+});
+
+canvas.addEventListener('mouseleave', function() {
+  hideTooltip();
+  document.getElementById('hover-info').textContent = 'Passe o mouse sobre a matrix para ver as conexões';
+});
+
+canvas.addEventListener('click', function(e) {
+  var rect = canvas.getBoundingClientRect();
+  var scaleY = canvas.height / rect.height;
+  var row = Math.floor((e.clientY - rect.top) * scaleY / CELL);
+  if (row < 0 || row >= N) return;
+
+  selectedRow = row;
+  highlightLabel(row);
+  drawMatrix(row);
+  showNodeDetail(names[row]);
+});
+
+function hideTooltip() {
+  tooltip.style.display = 'none';
+}
+
+// ── Label highlight ──────────────────────────────────────────────────────────
+function highlightLabel(idx) {
+  document.querySelectorAll('.col-label, .row-label').forEach(function(el) {
+    el.classList.remove('highlighted');
+  });
+  if (idx >= 0) {
+    var cl = document.getElementById('cl-' + idx);
+    var rl = document.getElementById('rl-' + idx);
+    if (cl) cl.classList.add('highlighted');
+    if (rl) rl.classList.add('highlighted');
+  }
+}
+
+// ── Node detail panel ────────────────────────────────────────────────────────
+function showNodeDetail(name) {
+  var d = nodeData[name];
+  if (!d) return;
+
+  document.getElementById('panel-placeholder').style.display = 'none';
+
+  var idx = names.indexOf(name);
+  var conns = [];
+  for (var j = 0; j < N; j++) {
+    if (adjMatrix[idx * N + j]) conns.push(names[j]);
+  }
+
+  var connItems = conns.length
+    ? conns.map(function(cn) {
+        return '<div class="conn-item" onclick="selectNode(\'' + cn.replace(/'/g, "\\'") + '\')">' + cn + '</div>';
+      }).join('')
+    : '<div style="font-size:0.75rem;color:#2a3a4a;font-style:italic">Sem conexões registradas.</div>';
+
+  var desc = d['Descrição'] || '';
+  var tipo = d.Tipo || '';
+  var local = d.Local || '';
+
+  var pc = document.getElementById('panel-content');
+  pc.innerHTML =
+    '<div class="pd-header">' +
+      (tipo ? '<div class="pd-type">' + tipo + '</div>' : '') +
+      '<div class="pd-name">' + name + '</div>' +
+      (local ? '<div class="pd-local">📍 ' + local + '</div>' : '') +
+    '</div>' +
+    (desc ? '<div class="pd-desc">' + desc + '</div>' : '') +
+    '<div class="pd-conn-list">' +
+      '<div class="pd-conn-label">Conexões (' + conns.length + ')</div>' +
+      connItems +
+    '</div>';
+
+  pc.style.display = 'flex';
+}
+
+function selectNode(name) {
+  var idx = names.indexOf(name);
+  if (idx < 0) return;
+  selectedRow = idx;
+  highlightLabel(idx);
+  drawMatrix(idx);
+  showNodeDetail(name);
+
+  // Scroll canvas to the selected node
+  var area = document.getElementById('canvas-area');
+  var targetY = 48 + idx * CELL - (area.clientHeight / 2);
+  var targetX = 120 + idx * CELL - (area.clientWidth / 2);
+  area.scrollTo({ top: Math.max(0, targetY), left: Math.max(0, targetX), behavior: 'smooth' });
+}
+
+// ── Search ──────────────────────────────────────────────────────────────────
+document.getElementById('search').addEventListener('input', function() {
+  var q = this.value.trim().toLowerCase();
+  if (!q || !names.length) return;
+
+  var match = names.find(function(n) { return n.toLowerCase().includes(q); });
+  if (match) selectNode(match);
+});
+
+</script>
+</body>
+</html>
