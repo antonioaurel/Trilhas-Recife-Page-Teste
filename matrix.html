@@ -30,7 +30,7 @@
     }
 
     .back-link {
-      color: #6a7a8a;
+      color: #8aaabb;
       text-decoration: none;
       font-size: 0.8rem;
       white-space: nowrap;
@@ -38,11 +38,7 @@
     }
     .back-link:hover { color: #e8a838; }
 
-    .header-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
+    .header-title { font-size: 0.95rem; font-weight: 600; white-space: nowrap; }
     .header-title span { color: #e8a838; }
 
     /* ── Toolbar ── */
@@ -50,39 +46,76 @@
       flex-shrink: 0;
       display: flex;
       align-items: center;
-      gap: 1rem;
-      padding: 0.6rem 1.25rem;
+      gap: 0.75rem;
+      padding: 0.55rem 1.25rem;
       background: #111b27;
       border-bottom: 1px solid #1a2535;
     }
 
     #search {
       background: #0f1923;
-      border: 1px solid #1e2d3d;
+      border: 1px solid #2a3d52;
       border-radius: 6px;
       color: #f0e6d3;
       font-family: 'Raleway', sans-serif;
       font-size: 0.82rem;
-      padding: 0.4rem 0.75rem;
-      width: 240px;
+      padding: 0.38rem 0.75rem;
+      width: 220px;
       outline: none;
       transition: border-color 0.15s;
     }
-    #search::placeholder { color: #3a4a5a; }
+    #search::placeholder { color: #4a6a7a; }
     #search:focus { border-color: #e8a838; }
 
     .toolbar-stats {
       font-size: 0.72rem;
-      color: #3a4a5a;
+      color: #5a7a8a;
+    }
+    .toolbar-stats strong { color: #9abbc8; }
+
+    /* Zoom controls */
+    .zoom-group {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-left: auto;
     }
 
-    .toolbar-stats strong { color: #6a7a8a; }
+    .zoom-label {
+      font-size: 0.7rem;
+      color: #5a7a8a;
+      white-space: nowrap;
+    }
+
+    .zoom-btn {
+      background: #1a2d3d;
+      border: 1px solid #2a3d52;
+      color: #9abbc8;
+      font-size: 1rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background 0.12s, color 0.12s;
+      user-select: none;
+    }
+    .zoom-btn:hover { background: #243d52; color: #e8a838; }
+
+    #zoom-level {
+      font-size: 0.72rem;
+      color: #9abbc8;
+      min-width: 36px;
+      text-align: center;
+    }
 
     .hover-info {
-      margin-left: auto;
-      font-size: 0.75rem;
-      color: #4a6a7a;
-      min-width: 300px;
+      font-size: 0.72rem;
+      color: #5a7a8a;
+      min-width: 260px;
       text-align: right;
     }
 
@@ -100,75 +133,75 @@
       overflow: auto;
       position: relative;
       min-width: 0;
-      background: #0f1923;
+      background: #0d1720;
     }
 
-    .canvas-area::-webkit-scrollbar { width: 6px; height: 6px; }
+    .canvas-area::-webkit-scrollbar { width: 7px; height: 7px; }
     .canvas-area::-webkit-scrollbar-track { background: #0a1018; }
-    .canvas-area::-webkit-scrollbar-thumb { background: #1e2d3d; border-radius: 3px; }
+    .canvas-area::-webkit-scrollbar-thumb { background: #2a3d52; border-radius: 4px; }
 
     .canvas-wrap {
       display: inline-block;
-      padding: 48px 0 0 120px; /* space for labels */
+      padding: var(--label-size, 60px) 0 40px var(--label-size, 60px);
       position: relative;
     }
 
-    /* Column labels (rotated, along top) */
+    /* Column labels (rotated top) */
     #col-labels {
       position: absolute;
       top: 0;
-      left: 120px;
-      height: 48px;
+      left: var(--label-size, 60px);
+      height: var(--label-size, 60px);
       display: flex;
       align-items: flex-end;
-      pointer-events: none;
     }
 
     .col-label {
       writing-mode: vertical-rl;
       transform: rotate(180deg);
-      font-size: 8px;
-      color: #2a3a4a;
+      font-size: var(--label-font, 9px);
+      color: #8aaabb;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-height: 46px;
-      line-height: 1;
-      cursor: default;
+      max-height: calc(var(--label-size, 60px) - 4px);
+      line-height: 1.1;
+      cursor: pointer;
       transition: color 0.1s;
+      width: var(--cell-size, 5px);
     }
+    .col-label:hover { color: #e8a838; }
+    .col-label.highlighted { color: #e8a838; font-weight: 700; }
 
-    .col-label.highlighted { color: #e8a838; font-weight: 600; }
-
-    /* Row labels (along left) */
+    /* Row labels (left) */
     #row-labels {
       position: absolute;
-      top: 48px;
+      top: var(--label-size, 60px);
       left: 0;
-      width: 118px;
+      width: var(--label-size, 60px);
       display: flex;
       flex-direction: column;
-      pointer-events: none;
     }
 
     .row-label {
-      font-size: 8px;
-      color: #2a3a4a;
+      font-size: var(--label-font, 9px);
+      color: #8aaabb;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 116px;
-      line-height: 1;
+      max-width: calc(var(--label-size, 60px) - 4px);
+      line-height: 1.1;
       text-align: right;
-      padding-right: 4px;
-      cursor: default;
+      padding-right: 5px;
+      cursor: pointer;
       transition: color 0.1s;
+      height: var(--cell-size, 5px);
       display: flex;
       align-items: center;
       justify-content: flex-end;
     }
-
-    .row-label.highlighted { color: #e8a838; font-weight: 600; }
+    .row-label:hover { color: #e8a838; }
+    .row-label.highlighted { color: #e8a838; font-weight: 700; }
 
     canvas#matrix {
       display: block;
@@ -179,27 +212,27 @@
     /* ── Tooltip ── */
     #tooltip {
       position: fixed;
-      background: rgba(10, 18, 26, 0.97);
-      border: 1px solid #1e2d3d;
+      background: rgba(8, 15, 22, 0.97);
+      border: 1px solid #2a3d52;
       border-radius: 5px;
       padding: 0.45rem 0.75rem;
       font-size: 0.72rem;
-      color: #c0d0dc;
+      color: #c0d8e4;
       pointer-events: none;
       display: none;
       z-index: 100;
-      max-width: 260px;
-      line-height: 1.5;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      max-width: 280px;
+      line-height: 1.6;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
     }
-
     #tooltip .tt-row { color: #7aaabb; }
-    #tooltip .tt-col { color: #aabb7a; }
-    #tooltip .tt-conn { color: #e8a838; font-weight: 600; margin-top: 0.2rem; }
+    #tooltip .tt-col { color: #aacca0; }
+    #tooltip .tt-conn { color: #e8a838; font-weight: 600; }
+    #tooltip .tt-none { color: #3a5060; }
 
     /* ── Right panel ── */
     #panel {
-      width: 280px;
+      width: 285px;
       flex-shrink: 0;
       background: #111b27;
       border-left: 1px solid #1a2535;
@@ -216,11 +249,9 @@
       justify-content: center;
       padding: 2rem 1.5rem;
       text-align: center;
-      color: #2a3a4a;
       gap: 0.75rem;
     }
-
-    .panel-placeholder p { font-size: 0.78rem; line-height: 1.65; }
+    .panel-placeholder p { font-size: 0.78rem; line-height: 1.7; color: #4a6a7a; }
 
     #panel-content {
       display: none;
@@ -234,7 +265,6 @@
       border-bottom: 1px solid #1a2535;
       flex-shrink: 0;
     }
-
     .pd-type {
       font-size: 0.6rem;
       text-transform: uppercase;
@@ -242,25 +272,19 @@
       color: #e8a838;
       margin-bottom: 0.35rem;
     }
-
     .pd-name {
       font-size: 1rem;
       font-weight: 600;
       color: #f0e6d3;
       line-height: 1.3;
     }
-
-    .pd-local {
-      font-size: 0.7rem;
-      color: #3a6a7a;
-      margin-top: 0.25rem;
-    }
+    .pd-local { font-size: 0.7rem; color: #4a8a9a; margin-top: 0.25rem; }
 
     .pd-desc {
       padding: 0.75rem 1rem;
       font-size: 0.76rem;
       line-height: 1.7;
-      color: #6a7a8a;
+      color: #7a9aaa;
       border-bottom: 1px solid #1a2535;
       flex-shrink: 0;
       max-height: 130px;
@@ -272,15 +296,14 @@
       overflow-y: auto;
       padding: 0.65rem 0.9rem 1rem;
     }
-
     .pd-conn-list::-webkit-scrollbar { width: 3px; }
-    .pd-conn-list::-webkit-scrollbar-thumb { background: #1e2d3d; }
+    .pd-conn-list::-webkit-scrollbar-thumb { background: #2a3d52; }
 
     .pd-conn-label {
       font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: #2a3a4a;
+      color: #3a5a6a;
       margin-bottom: 0.5rem;
       padding-bottom: 0.4rem;
       border-bottom: 1px solid #1a2535;
@@ -293,12 +316,11 @@
       border-radius: 4px;
       cursor: pointer;
       border: 1px solid transparent;
-      transition: background 0.1s, border-color 0.1s;
+      transition: background 0.1s, border-color 0.1s, color 0.1s;
     }
-
     .conn-item:hover {
       background: rgba(232,168,56,0.07);
-      border-color: rgba(232,168,56,0.2);
+      border-color: rgba(232,168,56,0.25);
       color: #e8a838;
     }
   </style>
@@ -311,9 +333,17 @@
 </header>
 
 <div class="toolbar">
-  <input id="search" type="text" placeholder="Buscar nó (ex: Ariano Suassuna)…" autocomplete="off">
+  <input id="search" type="text" placeholder="Buscar nó…" autocomplete="off">
   <div class="toolbar-stats" id="stats">Carregando…</div>
-  <div class="hover-info" id="hover-info">Passe o mouse sobre a matrix para ver as conexões</div>
+
+  <div class="zoom-group">
+    <span class="zoom-label">Zoom</span>
+    <button class="zoom-btn" id="zoom-out" title="Diminuir (−)">−</button>
+    <div id="zoom-level">5px</div>
+    <button class="zoom-btn" id="zoom-in" title="Aumentar (+)">+</button>
+  </div>
+
+  <div class="hover-info" id="hover-info">Passe o mouse sobre a matrix</div>
 </div>
 
 <div class="workspace">
@@ -327,7 +357,7 @@
 
   <div id="panel">
     <div class="panel-placeholder" id="panel-placeholder">
-      <p>Clique em uma célula ou linha da matrix para ver os detalhes do nó.</p>
+      <p>Clique em qualquer linha ou célula para ver os detalhes e conexões do nó.</p>
     </div>
     <div id="panel-content"></div>
   </div>
@@ -338,16 +368,19 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
-var CELL = 5;
+var CELL      = 5;
+var MIN_CELL  = 2;
+var MAX_CELL  = 24;
+var LABEL_PAD = 60; // px reserved for axis labels
+
 var names = [], nodeData = {}, adjMatrix, N;
 var selectedRow = -1;
-var hoverRow = -1, hoverCol = -1;
 
 var canvas  = document.getElementById('matrix');
 var ctx     = canvas.getContext('2d');
 var tooltip = document.getElementById('tooltip');
 
-// ── Load data ──────────────────────────────────────────────────────────────
+// ── Load CSV ────────────────────────────────────────────────────────────────
 d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
   if (error) { console.error(error); return; }
 
@@ -355,42 +388,31 @@ d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
   N = names.length;
 
   var nameIndex = {};
-  names.forEach(function(n, i) {
-    nameIndex[n] = i;
-    nodeData[n] = graph[i];
-  });
+  names.forEach(function(n, i) { nameIndex[n] = i; nodeData[n] = graph[i]; });
 
   adjMatrix = new Uint8Array(N * N);
-
   graph.forEach(function(row) {
     var i = nameIndex[row.Nome];
     Object.keys(row).forEach(function(k) {
       if (k.startsWith('Intercon') && row[k].trim() !== '') {
         var j = nameIndex[row[k].trim()];
-        if (j !== undefined) {
-          adjMatrix[i * N + j] = 1;
-          adjMatrix[j * N + i] = 1;
-        }
+        if (j !== undefined) { adjMatrix[i * N + j] = 1; adjMatrix[j * N + i] = 1; }
       }
     });
   });
 
-  var connCount = 0;
-  for (var x = 0; x < adjMatrix.length; x++) { if (adjMatrix[x]) connCount++; }
-  connCount = connCount / 2;
+  var total = 0;
+  for (var x = 0; x < adjMatrix.length; x++) { if (adjMatrix[x]) total++; }
 
   document.getElementById('stats').innerHTML =
-    '<strong>' + N + '</strong> nós &nbsp;·&nbsp; <strong>' + connCount + '</strong> conexões únicas';
+    '<strong>' + N + '</strong> nós · <strong>' + (total / 2) + '</strong> conexões';
 
   buildLabels();
-  drawMatrix();
+  applyZoom(CELL);
 });
 
-// ── Build axis labels ───────────────────────────────────────────────────────
+// ── Build DOM labels ─────────────────────────────────────────────────────────
 function buildLabels() {
-  canvas.width  = N * CELL;
-  canvas.height = N * CELL;
-
   var colWrap = document.getElementById('col-labels');
   var rowWrap = document.getElementById('row-labels');
 
@@ -399,109 +421,141 @@ function buildLabels() {
     c.className = 'col-label';
     c.id = 'cl-' + i;
     c.title = name;
-    c.style.width = CELL + 'px';
     c.textContent = name;
+    c.addEventListener('click', function() { selectNode(name); });
     colWrap.appendChild(c);
 
     var r = document.createElement('div');
     r.className = 'row-label';
     r.id = 'rl-' + i;
     r.title = name;
-    r.style.height = CELL + 'px';
     r.textContent = name;
+    r.addEventListener('click', function() { selectNode(name); });
     rowWrap.appendChild(r);
   });
 }
 
-// ── Draw canvas ─────────────────────────────────────────────────────────────
+// ── Zoom ─────────────────────────────────────────────────────────────────────
+function applyZoom(newCell) {
+  CELL = Math.max(MIN_CELL, Math.min(MAX_CELL, newCell));
+
+  // Scale label area proportionally — bigger cells = more room for names
+  var labelSize = Math.max(48, Math.min(160, CELL * 12));
+  var labelFont = Math.max(7, Math.min(13, CELL * 1.8));
+
+  var root = document.documentElement;
+  root.style.setProperty('--cell-size', CELL + 'px');
+  root.style.setProperty('--label-size', labelSize + 'px');
+  root.style.setProperty('--label-font', labelFont + 'px');
+
+  // Update canvas size and redraw
+  canvas.width  = N * CELL;
+  canvas.height = N * CELL;
+  drawMatrix(selectedRow >= 0 ? selectedRow : undefined);
+
+  document.getElementById('zoom-level').textContent = CELL + 'px';
+}
+
+document.getElementById('zoom-in').addEventListener('click', function() { applyZoom(CELL + (CELL < 8 ? 1 : 2)); });
+document.getElementById('zoom-out').addEventListener('click', function() { applyZoom(CELL - (CELL <= 8 ? 1 : 2)); });
+
+document.getElementById('canvas-area').addEventListener('wheel', function(e) {
+  if (e.ctrlKey || e.metaKey) {
+    e.preventDefault();
+    applyZoom(e.deltaY < 0 ? CELL + 1 : CELL - 1);
+  }
+}, { passive: false });
+
+// ── Draw canvas ──────────────────────────────────────────────────────────────
 function drawMatrix(highlightIdx) {
-  ctx.fillStyle = '#0f1923';
+  // Background
+  ctx.fillStyle = '#0d1720';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Draw all connections
-  for (var i = 0; i < N; i++) {
-    for (var j = 0; j < N; j++) {
-      if (!adjMatrix[i * N + j]) continue;
-
-      if (highlightIdx !== undefined && (i === highlightIdx || j === highlightIdx)) {
-        ctx.fillStyle = '#f0bc50';
-      } else {
-        ctx.fillStyle = '#e8a838';
-      }
-      ctx.fillRect(j * CELL, i * CELL, CELL - 1, CELL - 1);
+  // Subtle grid lines every 10 rows when cell is big enough
+  if (CELL >= 6) {
+    ctx.strokeStyle = 'rgba(30,45,60,0.6)';
+    ctx.lineWidth = 0.5;
+    for (var g = 0; g <= N; g += 10) {
+      ctx.beginPath();
+      ctx.moveTo(g * CELL, 0); ctx.lineTo(g * CELL, canvas.height);
+      ctx.moveTo(0, g * CELL); ctx.lineTo(canvas.width, g * CELL);
+      ctx.stroke();
     }
   }
 
-  // Highlight selected row/col overlay
+  // Highlight band (row + col)
   if (highlightIdx !== undefined) {
-    ctx.fillStyle = 'rgba(232, 168, 56, 0.07)';
+    ctx.fillStyle = 'rgba(232, 168, 56, 0.06)';
     ctx.fillRect(0, highlightIdx * CELL, canvas.width, CELL);
     ctx.fillRect(highlightIdx * CELL, 0, CELL, canvas.height);
   }
 
-  // Diagonal
+  // Connections
+  for (var i = 0; i < N; i++) {
+    for (var j = 0; j < N; j++) {
+      if (!adjMatrix[i * N + j]) continue;
+      var isHighlight = highlightIdx !== undefined && (i === highlightIdx || j === highlightIdx);
+      ctx.fillStyle = isHighlight ? '#f5c842' : '#e8a838';
+      ctx.fillRect(j * CELL, i * CELL, CELL - (CELL > 4 ? 1 : 0), CELL - (CELL > 4 ? 1 : 0));
+    }
+  }
+
+  // Diagonal marker for selected
   if (highlightIdx !== undefined) {
-    ctx.fillStyle = 'rgba(240,188,80,0.3)';
-    ctx.fillRect(highlightIdx * CELL, highlightIdx * CELL, CELL - 1, CELL - 1);
+    ctx.fillStyle = 'rgba(245, 200, 66, 0.5)';
+    ctx.fillRect(highlightIdx * CELL, highlightIdx * CELL, CELL, CELL);
   }
 }
 
-// ── Mouse interactions ──────────────────────────────────────────────────────
+// ── Mouse events ─────────────────────────────────────────────────────────────
 canvas.addEventListener('mousemove', function(e) {
   var rect = canvas.getBoundingClientRect();
   var scaleX = canvas.width  / rect.width;
   var scaleY = canvas.height / rect.height;
-  var col = Math.floor((e.clientX - rect.left)  * scaleX / CELL);
-  var row = Math.floor((e.clientY - rect.top)   * scaleY / CELL);
+  var col = Math.floor((e.clientX - rect.left) * scaleX / CELL);
+  var row = Math.floor((e.clientY - rect.top)  * scaleY / CELL);
 
-  if (col < 0 || col >= N || row < 0 || row >= N) {
-    hideTooltip(); return;
-  }
+  if (col < 0 || col >= N || row < 0 || row >= N) { hideTooltip(); return; }
 
-  hoverRow = row; hoverCol = col;
   var connected = adjMatrix[row * N + col] === 1;
   var same = row === col;
 
-  document.getElementById('hover-info').textContent =
-    names[row] + '  →  ' + names[col] + (connected ? '  ✓' : '');
+  document.getElementById('hover-info').innerHTML =
+    '<span style="color:#7aaabb">' + names[row] + '</span>' +
+    ' &nbsp;→&nbsp; ' +
+    '<span style="color:#aacca0">' + names[col] + '</span>' +
+    (connected && !same ? ' &nbsp;<span style="color:#e8a838">✓</span>' : '');
 
   tooltip.style.display = 'block';
   tooltip.style.left = (e.clientX + 16) + 'px';
-  tooltip.style.top  = (e.clientY - 12) + 'px';
+  tooltip.style.top  = (e.clientY - 10) + 'px';
   tooltip.innerHTML =
     '<div class="tt-row">↓ ' + names[row] + '</div>' +
     '<div class="tt-col">→ ' + names[col] + '</div>' +
-    (same       ? '' :
-     connected  ? '<div class="tt-conn">✓ Conectados</div>'
-                : '<div style="color:#2a3a4a;margin-top:0.2rem;">Sem conexão</div>');
+    (same      ? '<div class="tt-none">—</div>' :
+     connected ? '<div class="tt-conn">✓ Conectados</div>'
+               : '<div class="tt-none">Sem conexão</div>');
 });
 
 canvas.addEventListener('mouseleave', function() {
   hideTooltip();
-  document.getElementById('hover-info').textContent = 'Passe o mouse sobre a matrix para ver as conexões';
+  document.getElementById('hover-info').textContent = 'Passe o mouse sobre a matrix';
 });
 
 canvas.addEventListener('click', function(e) {
   var rect = canvas.getBoundingClientRect();
   var scaleY = canvas.height / rect.height;
   var row = Math.floor((e.clientY - rect.top) * scaleY / CELL);
-  if (row < 0 || row >= N) return;
-
-  selectedRow = row;
-  highlightLabel(row);
-  drawMatrix(row);
-  showNodeDetail(names[row]);
+  if (row >= 0 && row < N) selectNode(names[row]);
 });
 
-function hideTooltip() {
-  tooltip.style.display = 'none';
-}
+function hideTooltip() { tooltip.style.display = 'none'; }
 
-// ── Label highlight ──────────────────────────────────────────────────────────
+// ── Label highlight ───────────────────────────────────────────────────────────
 function highlightLabel(idx) {
-  document.querySelectorAll('.col-label, .row-label').forEach(function(el) {
-    el.classList.remove('highlighted');
-  });
+  document.querySelectorAll('.col-label.highlighted, .row-label.highlighted')
+    .forEach(function(el) { el.classList.remove('highlighted'); });
   if (idx >= 0) {
     var cl = document.getElementById('cl-' + idx);
     var rl = document.getElementById('rl-' + idx);
@@ -510,7 +564,7 @@ function highlightLabel(idx) {
   }
 }
 
-// ── Node detail panel ────────────────────────────────────────────────────────
+// ── Detail panel ──────────────────────────────────────────────────────────────
 function showNodeDetail(name) {
   var d = nodeData[name];
   if (!d) return;
@@ -519,28 +573,22 @@ function showNodeDetail(name) {
 
   var idx = names.indexOf(name);
   var conns = [];
-  for (var j = 0; j < N; j++) {
-    if (adjMatrix[idx * N + j]) conns.push(names[j]);
-  }
+  for (var j = 0; j < N; j++) { if (adjMatrix[idx * N + j]) conns.push(names[j]); }
 
   var connItems = conns.length
     ? conns.map(function(cn) {
         return '<div class="conn-item" onclick="selectNode(\'' + cn.replace(/'/g, "\\'") + '\')">' + cn + '</div>';
       }).join('')
-    : '<div style="font-size:0.75rem;color:#2a3a4a;font-style:italic">Sem conexões registradas.</div>';
-
-  var desc = d['Descrição'] || '';
-  var tipo = d.Tipo || '';
-  var local = d.Local || '';
+    : '<div style="font-size:0.75rem;color:#3a5060;font-style:italic">Sem conexões.</div>';
 
   var pc = document.getElementById('panel-content');
   pc.innerHTML =
     '<div class="pd-header">' +
-      (tipo ? '<div class="pd-type">' + tipo + '</div>' : '') +
+      (d.Tipo   ? '<div class="pd-type">' + d.Tipo + '</div>' : '') +
       '<div class="pd-name">' + name + '</div>' +
-      (local ? '<div class="pd-local">📍 ' + local + '</div>' : '') +
+      (d.Local  ? '<div class="pd-local">📍 ' + d.Local + '</div>' : '') +
     '</div>' +
-    (desc ? '<div class="pd-desc">' + desc + '</div>' : '') +
+    (d['Descrição'] ? '<div class="pd-desc">' + d['Descrição'] + '</div>' : '') +
     '<div class="pd-conn-list">' +
       '<div class="pd-conn-label">Conexões (' + conns.length + ')</div>' +
       connItems +
@@ -557,18 +605,20 @@ function selectNode(name) {
   drawMatrix(idx);
   showNodeDetail(name);
 
-  // Scroll canvas to the selected node
+  // Scroll to center on selected node
   var area = document.getElementById('canvas-area');
-  var targetY = 48 + idx * CELL - (area.clientHeight / 2);
-  var targetX = 120 + idx * CELL - (area.clientWidth / 2);
-  area.scrollTo({ top: Math.max(0, targetY), left: Math.max(0, targetX), behavior: 'smooth' });
+  var labelSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--label-size')) || LABEL_PAD;
+  area.scrollTo({
+    top:  Math.max(0, labelSize + idx * CELL - area.clientHeight / 2),
+    left: Math.max(0, labelSize + idx * CELL - area.clientWidth  / 2),
+    behavior: 'smooth'
+  });
 }
 
-// ── Search ──────────────────────────────────────────────────────────────────
+// ── Search ────────────────────────────────────────────────────────────────────
 document.getElementById('search').addEventListener('input', function() {
   var q = this.value.trim().toLowerCase();
   if (!q || !names.length) return;
-
   var match = names.find(function(n) { return n.toLowerCase().includes(q); });
   if (match) selectNode(match);
 });
