@@ -8,6 +8,12 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+    :root {
+      --cell-size:  5px;
+      --label-size: 70px;
+      --label-font: 9px;
+    }
+
     body {
       font-family: 'Raleway', sans-serif;
       background: #0f1923;
@@ -30,7 +36,7 @@
     }
 
     .back-link {
-      color: #8aaabb;
+      color: #c0b0a0;
       text-decoration: none;
       font-size: 0.8rem;
       white-space: nowrap;
@@ -38,7 +44,7 @@
     }
     .back-link:hover { color: #e8a838; }
 
-    .header-title { font-size: 0.95rem; font-weight: 600; white-space: nowrap; }
+    .header-title { font-size: 0.95rem; font-weight: 600; white-space: nowrap; color: #f0e6d3; }
     .header-title span { color: #e8a838; }
 
     /* ── Toolbar ── */
@@ -64,16 +70,12 @@
       outline: none;
       transition: border-color 0.15s;
     }
-    #search::placeholder { color: #4a6a7a; }
+    #search::placeholder { color: #5a6a7a; }
     #search:focus { border-color: #e8a838; }
 
-    .toolbar-stats {
-      font-size: 0.72rem;
-      color: #5a7a8a;
-    }
-    .toolbar-stats strong { color: #9abbc8; }
+    .toolbar-stats { font-size: 0.72rem; color: #a09080; }
+    .toolbar-stats strong { color: #c0b0a0; }
 
-    /* Zoom controls */
     .zoom-group {
       display: flex;
       align-items: center;
@@ -81,16 +83,12 @@
       margin-left: auto;
     }
 
-    .zoom-label {
-      font-size: 0.7rem;
-      color: #5a7a8a;
-      white-space: nowrap;
-    }
+    .zoom-label { font-size: 0.7rem; color: #a09080; white-space: nowrap; }
 
     .zoom-btn {
       background: #1a2d3d;
       border: 1px solid #2a3d52;
-      color: #9abbc8;
+      color: #c0b0a0;
       font-size: 1rem;
       width: 28px;
       height: 28px;
@@ -99,25 +97,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      line-height: 1;
       transition: background 0.12s, color 0.12s;
       user-select: none;
     }
     .zoom-btn:hover { background: #243d52; color: #e8a838; }
 
-    #zoom-level {
-      font-size: 0.72rem;
-      color: #9abbc8;
-      min-width: 36px;
-      text-align: center;
-    }
+    #zoom-level { font-size: 0.72rem; color: #c0b0a0; min-width: 36px; text-align: center; }
 
-    .hover-info {
-      font-size: 0.72rem;
-      color: #5a7a8a;
-      min-width: 260px;
-      text-align: right;
-    }
+    .hover-info { font-size: 0.72rem; color: #a09080; min-width: 260px; text-align: right; }
 
     /* ── Workspace ── */
     .workspace {
@@ -127,11 +114,10 @@
       min-height: 0;
     }
 
-    /* ── Canvas area ── */
+    /* ── Canvas scroll area ── */
     .canvas-area {
       flex: 1;
       overflow: auto;
-      position: relative;
       min-width: 0;
       background: #0d1720;
     }
@@ -140,67 +126,94 @@
     .canvas-area::-webkit-scrollbar-track { background: #0a1018; }
     .canvas-area::-webkit-scrollbar-thumb { background: #2a3d52; border-radius: 4px; }
 
-    .canvas-wrap {
-      display: inline-block;
-      padding: var(--label-size, 60px) 0 40px var(--label-size, 60px);
-      position: relative;
+    /* ── Frozen-pane layout ── */
+    .matrix-outer {
+      display: flex;
+      flex-direction: column;
+      width: fit-content;
+      min-width: max-content;
     }
 
-    /* Column labels (rotated top) */
-    #col-labels {
-      position: absolute;
+    /* Row 1: corner + column headers — sticky at top */
+    .header-row {
+      display: flex;
+      position: sticky;
       top: 0;
-      left: var(--label-size, 60px);
-      height: var(--label-size, 60px);
+      z-index: 3;
+    }
+
+    /* Top-left corner — sticky at top AND left */
+    .corner {
+      flex-shrink: 0;
+      width:  var(--label-size);
+      height: var(--label-size);
+      position: sticky;
+      left: 0;
+      z-index: 4;
+      background: #0d1720;
+      border-right:  1px solid #1e2d3d;
+      border-bottom: 1px solid #1e2d3d;
+    }
+
+    /* Column label strip */
+    #col-labels {
       display: flex;
       align-items: flex-end;
+      height: var(--label-size);
+      background: #0d1720;
+      border-bottom: 1px solid #1e2d3d;
     }
 
     .col-label {
       writing-mode: vertical-rl;
       transform: rotate(180deg);
-      font-size: var(--label-font, 9px);
-      color: #8aaabb;
+      font-size: var(--label-font);
+      color: #c0b0a0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-height: calc(var(--label-size, 60px) - 4px);
+      max-height: calc(var(--label-size) - 4px);
       line-height: 1.1;
       cursor: pointer;
       transition: color 0.1s;
-      width: var(--cell-size, 5px);
+      width: var(--cell-size);
     }
-    .col-label:hover { color: #e8a838; }
+    .col-label:hover     { color: #e8a838; }
     .col-label.highlighted { color: #e8a838; font-weight: 700; }
 
-    /* Row labels (left) */
+    /* Body row: row labels (sticky left) + canvas */
+    .body-row { display: flex; }
+
     #row-labels {
-      position: absolute;
-      top: var(--label-size, 60px);
-      left: 0;
-      width: var(--label-size, 60px);
+      flex-shrink: 0;
+      width: var(--label-size);
       display: flex;
       flex-direction: column;
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: #0d1720;
+      border-right: 1px solid #1e2d3d;
     }
 
     .row-label {
-      font-size: var(--label-font, 9px);
-      color: #8aaabb;
+      font-size: var(--label-font);
+      color: #c0b0a0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: calc(var(--label-size, 60px) - 4px);
+      max-width: calc(var(--label-size) - 6px);
       line-height: 1.1;
       text-align: right;
       padding-right: 5px;
       cursor: pointer;
       transition: color 0.1s;
-      height: var(--cell-size, 5px);
+      height: var(--cell-size);
       display: flex;
       align-items: center;
       justify-content: flex-end;
     }
-    .row-label:hover { color: #e8a838; }
+    .row-label:hover     { color: #e8a838; }
     .row-label.highlighted { color: #e8a838; font-weight: 700; }
 
     canvas#matrix {
@@ -212,12 +225,12 @@
     /* ── Tooltip ── */
     #tooltip {
       position: fixed;
-      background: rgba(8, 15, 22, 0.97);
+      background: rgba(8, 14, 20, 0.97);
       border: 1px solid #2a3d52;
       border-radius: 5px;
       padding: 0.45rem 0.75rem;
       font-size: 0.72rem;
-      color: #c0d8e4;
+      color: #c0b0a0;
       pointer-events: none;
       display: none;
       z-index: 100;
@@ -225,10 +238,10 @@
       line-height: 1.6;
       box-shadow: 0 4px 20px rgba(0,0,0,0.6);
     }
-    #tooltip .tt-row { color: #7aaabb; }
-    #tooltip .tt-col { color: #aacca0; }
+    #tooltip .tt-row  { color: #e0c898; }
+    #tooltip .tt-col  { color: #a0c0a8; }
     #tooltip .tt-conn { color: #e8a838; font-weight: 600; }
-    #tooltip .tt-none { color: #3a5060; }
+    #tooltip .tt-none { color: #4a5a6a; }
 
     /* ── Right panel ── */
     #panel {
@@ -251,7 +264,7 @@
       text-align: center;
       gap: 0.75rem;
     }
-    .panel-placeholder p { font-size: 0.78rem; line-height: 1.7; color: #4a6a7a; }
+    .panel-placeholder p { font-size: 0.78rem; line-height: 1.7; color: #7a8a90; }
 
     #panel-content {
       display: none;
@@ -260,11 +273,8 @@
       overflow: hidden;
     }
 
-    .pd-header {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid #1a2535;
-      flex-shrink: 0;
-    }
+    .pd-header { padding: 0.85rem 1rem; border-bottom: 1px solid #1a2535; flex-shrink: 0; }
+
     .pd-type {
       font-size: 0.6rem;
       text-transform: uppercase;
@@ -272,30 +282,23 @@
       color: #e8a838;
       margin-bottom: 0.35rem;
     }
-    .pd-name {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #f0e6d3;
-      line-height: 1.3;
-    }
-    .pd-local { font-size: 0.7rem; color: #4a8a9a; margin-top: 0.25rem; }
+
+    .pd-name { font-size: 1rem; font-weight: 600; color: #f0e6d3; line-height: 1.3; }
+
+    .pd-local { font-size: 0.7rem; color: #a09080; margin-top: 0.25rem; }
 
     .pd-desc {
       padding: 0.75rem 1rem;
       font-size: 0.76rem;
       line-height: 1.7;
-      color: #7a9aaa;
+      color: #c0b0a0;
       border-bottom: 1px solid #1a2535;
       flex-shrink: 0;
       max-height: 130px;
       overflow-y: auto;
     }
 
-    .pd-conn-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 0.65rem 0.9rem 1rem;
-    }
+    .pd-conn-list { flex: 1; overflow-y: auto; padding: 0.65rem 0.9rem 1rem; }
     .pd-conn-list::-webkit-scrollbar { width: 3px; }
     .pd-conn-list::-webkit-scrollbar-thumb { background: #2a3d52; }
 
@@ -303,7 +306,7 @@
       font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: #3a5a6a;
+      color: #5a6a70;
       margin-bottom: 0.5rem;
       padding-bottom: 0.4rem;
       border-bottom: 1px solid #1a2535;
@@ -311,7 +314,7 @@
 
     .conn-item {
       font-size: 0.76rem;
-      color: #7aaabb;
+      color: #c0b0a0;
       padding: 0.3rem 0.4rem;
       border-radius: 4px;
       cursor: pointer;
@@ -338,20 +341,32 @@
 
   <div class="zoom-group">
     <span class="zoom-label">Zoom</span>
-    <button class="zoom-btn" id="zoom-out" title="Diminuir (−)">−</button>
+    <button class="zoom-btn" id="zoom-out" title="Diminuir">−</button>
     <div id="zoom-level">5px</div>
-    <button class="zoom-btn" id="zoom-in" title="Aumentar (+)">+</button>
+    <button class="zoom-btn" id="zoom-in"  title="Aumentar">+</button>
   </div>
 
   <div class="hover-info" id="hover-info">Passe o mouse sobre a matrix</div>
 </div>
 
 <div class="workspace">
+
+  <!-- Scrollable area with frozen panes -->
   <div class="canvas-area" id="canvas-area">
-    <div class="canvas-wrap" id="canvas-wrap">
-      <div id="col-labels"></div>
-      <div id="row-labels"></div>
-      <canvas id="matrix"></canvas>
+    <div class="matrix-outer">
+
+      <!-- Row 1: frozen header (corner + col labels) -->
+      <div class="header-row">
+        <div class="corner"></div>
+        <div id="col-labels"></div>
+      </div>
+
+      <!-- Row 2: frozen left (row labels) + canvas -->
+      <div class="body-row">
+        <div id="row-labels"></div>
+        <canvas id="matrix"></canvas>
+      </div>
+
     </div>
   </div>
 
@@ -368,10 +383,9 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
-var CELL      = 5;
-var MIN_CELL  = 2;
-var MAX_CELL  = 24;
-var LABEL_PAD = 60; // px reserved for axis labels
+var CELL     = 5;
+var MIN_CELL = 2;
+var MAX_CELL = 24;
 
 var names = [], nodeData = {}, adjMatrix, N;
 var selectedRow = -1;
@@ -380,7 +394,7 @@ var canvas  = document.getElementById('matrix');
 var ctx     = canvas.getContext('2d');
 var tooltip = document.getElementById('tooltip');
 
-// ── Load CSV ────────────────────────────────────────────────────────────────
+// ── Load CSV ─────────────────────────────────────────────────────────────────
 d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
   if (error) { console.error(error); return; }
 
@@ -411,44 +425,42 @@ d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
   applyZoom(CELL);
 });
 
-// ── Build DOM labels ─────────────────────────────────────────────────────────
+// ── Build axis labels (once) ──────────────────────────────────────────────────
 function buildLabels() {
   var colWrap = document.getElementById('col-labels');
   var rowWrap = document.getElementById('row-labels');
 
   names.forEach(function(name, i) {
     var c = document.createElement('div');
-    c.className = 'col-label';
-    c.id = 'cl-' + i;
-    c.title = name;
+    c.className  = 'col-label';
+    c.id         = 'cl-' + i;
+    c.title      = name;
     c.textContent = name;
     c.addEventListener('click', function() { selectNode(name); });
     colWrap.appendChild(c);
 
     var r = document.createElement('div');
-    r.className = 'row-label';
-    r.id = 'rl-' + i;
-    r.title = name;
+    r.className  = 'row-label';
+    r.id         = 'rl-' + i;
+    r.title      = name;
     r.textContent = name;
     r.addEventListener('click', function() { selectNode(name); });
     rowWrap.appendChild(r);
   });
 }
 
-// ── Zoom ─────────────────────────────────────────────────────────────────────
+// ── Zoom ──────────────────────────────────────────────────────────────────────
 function applyZoom(newCell) {
   CELL = Math.max(MIN_CELL, Math.min(MAX_CELL, newCell));
 
-  // Scale label area proportionally — bigger cells = more room for names
-  var labelSize = Math.max(48, Math.min(160, CELL * 12));
-  var labelFont = Math.max(7, Math.min(13, CELL * 1.8));
+  var labelSize = Math.max(60, Math.min(180, CELL * 14));
+  var labelFont = Math.max(7,  Math.min(14,  CELL * 1.9));
 
   var root = document.documentElement;
-  root.style.setProperty('--cell-size', CELL + 'px');
+  root.style.setProperty('--cell-size',  CELL      + 'px');
   root.style.setProperty('--label-size', labelSize + 'px');
   root.style.setProperty('--label-font', labelFont + 'px');
 
-  // Update canvas size and redraw
   canvas.width  = N * CELL;
   canvas.height = N * CELL;
   drawMatrix(selectedRow >= 0 ? selectedRow : undefined);
@@ -456,7 +468,7 @@ function applyZoom(newCell) {
   document.getElementById('zoom-level').textContent = CELL + 'px';
 }
 
-document.getElementById('zoom-in').addEventListener('click', function() { applyZoom(CELL + (CELL < 8 ? 1 : 2)); });
+document.getElementById('zoom-in').addEventListener('click',  function() { applyZoom(CELL + (CELL < 8 ? 1 : 2)); });
 document.getElementById('zoom-out').addEventListener('click', function() { applyZoom(CELL - (CELL <= 8 ? 1 : 2)); });
 
 document.getElementById('canvas-area').addEventListener('wheel', function(e) {
@@ -466,15 +478,13 @@ document.getElementById('canvas-area').addEventListener('wheel', function(e) {
   }
 }, { passive: false });
 
-// ── Draw canvas ──────────────────────────────────────────────────────────────
+// ── Draw ──────────────────────────────────────────────────────────────────────
 function drawMatrix(highlightIdx) {
-  // Background
   ctx.fillStyle = '#0d1720';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Subtle grid lines every 10 rows when cell is big enough
   if (CELL >= 6) {
-    ctx.strokeStyle = 'rgba(30,45,60,0.6)';
+    ctx.strokeStyle = 'rgba(30,45,60,0.5)';
     ctx.lineWidth = 0.5;
     for (var g = 0; g <= N; g += 10) {
       ctx.beginPath();
@@ -484,31 +494,29 @@ function drawMatrix(highlightIdx) {
     }
   }
 
-  // Highlight band (row + col)
   if (highlightIdx !== undefined) {
-    ctx.fillStyle = 'rgba(232, 168, 56, 0.06)';
+    ctx.fillStyle = 'rgba(232,168,56,0.06)';
     ctx.fillRect(0, highlightIdx * CELL, canvas.width, CELL);
     ctx.fillRect(highlightIdx * CELL, 0, CELL, canvas.height);
   }
 
-  // Connections
   for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
       if (!adjMatrix[i * N + j]) continue;
-      var isHighlight = highlightIdx !== undefined && (i === highlightIdx || j === highlightIdx);
-      ctx.fillStyle = isHighlight ? '#f5c842' : '#e8a838';
-      ctx.fillRect(j * CELL, i * CELL, CELL - (CELL > 4 ? 1 : 0), CELL - (CELL > 4 ? 1 : 0));
+      var hi = highlightIdx !== undefined && (i === highlightIdx || j === highlightIdx);
+      ctx.fillStyle = hi ? '#f5c842' : '#e8a838';
+      var gap = CELL > 4 ? 1 : 0;
+      ctx.fillRect(j * CELL, i * CELL, CELL - gap, CELL - gap);
     }
   }
 
-  // Diagonal marker for selected
   if (highlightIdx !== undefined) {
-    ctx.fillStyle = 'rgba(245, 200, 66, 0.5)';
+    ctx.fillStyle = 'rgba(245,200,66,0.5)';
     ctx.fillRect(highlightIdx * CELL, highlightIdx * CELL, CELL, CELL);
   }
 }
 
-// ── Mouse events ─────────────────────────────────────────────────────────────
+// ── Mouse events ──────────────────────────────────────────────────────────────
 canvas.addEventListener('mousemove', function(e) {
   var rect = canvas.getBoundingClientRect();
   var scaleX = canvas.width  / rect.width;
@@ -519,13 +527,13 @@ canvas.addEventListener('mousemove', function(e) {
   if (col < 0 || col >= N || row < 0 || row >= N) { hideTooltip(); return; }
 
   var connected = adjMatrix[row * N + col] === 1;
-  var same = row === col;
+  var same      = row === col;
 
   document.getElementById('hover-info').innerHTML =
-    '<span style="color:#7aaabb">' + names[row] + '</span>' +
-    ' &nbsp;→&nbsp; ' +
-    '<span style="color:#aacca0">' + names[col] + '</span>' +
-    (connected && !same ? ' &nbsp;<span style="color:#e8a838">✓</span>' : '');
+    '<span style="color:#e0c898">' + names[row] + '</span>' +
+    ' → ' +
+    '<span style="color:#a0c0a8">' + names[col] + '</span>' +
+    (connected && !same ? ' <span style="color:#e8a838">✓</span>' : '');
 
   tooltip.style.display = 'block';
   tooltip.style.left = (e.clientX + 16) + 'px';
@@ -533,8 +541,8 @@ canvas.addEventListener('mousemove', function(e) {
   tooltip.innerHTML =
     '<div class="tt-row">↓ ' + names[row] + '</div>' +
     '<div class="tt-col">→ ' + names[col] + '</div>' +
-    (same      ? '<div class="tt-none">—</div>' :
-     connected ? '<div class="tt-conn">✓ Conectados</div>'
+    (same      ? '<div class="tt-none">—</div>'
+   : connected ? '<div class="tt-conn">✓ Conectados</div>'
                : '<div class="tt-none">Sem conexão</div>');
 });
 
@@ -544,15 +552,15 @@ canvas.addEventListener('mouseleave', function() {
 });
 
 canvas.addEventListener('click', function(e) {
-  var rect = canvas.getBoundingClientRect();
+  var rect   = canvas.getBoundingClientRect();
   var scaleY = canvas.height / rect.height;
-  var row = Math.floor((e.clientY - rect.top) * scaleY / CELL);
+  var row    = Math.floor((e.clientY - rect.top) * scaleY / CELL);
   if (row >= 0 && row < N) selectNode(names[row]);
 });
 
 function hideTooltip() { tooltip.style.display = 'none'; }
 
-// ── Label highlight ───────────────────────────────────────────────────────────
+// ── Highlight labels ──────────────────────────────────────────────────────────
 function highlightLabel(idx) {
   document.querySelectorAll('.col-label.highlighted, .row-label.highlighted')
     .forEach(function(el) { el.classList.remove('highlighted'); });
@@ -579,14 +587,14 @@ function showNodeDetail(name) {
     ? conns.map(function(cn) {
         return '<div class="conn-item" onclick="selectNode(\'' + cn.replace(/'/g, "\\'") + '\')">' + cn + '</div>';
       }).join('')
-    : '<div style="font-size:0.75rem;color:#3a5060;font-style:italic">Sem conexões.</div>';
+    : '<div style="font-size:0.75rem;color:#4a5a60;font-style:italic">Sem conexões.</div>';
 
   var pc = document.getElementById('panel-content');
   pc.innerHTML =
     '<div class="pd-header">' +
-      (d.Tipo   ? '<div class="pd-type">' + d.Tipo + '</div>' : '') +
+      (d.Tipo  ? '<div class="pd-type">' + d.Tipo + '</div>' : '') +
       '<div class="pd-name">' + name + '</div>' +
-      (d.Local  ? '<div class="pd-local">📍 ' + d.Local + '</div>' : '') +
+      (d.Local ? '<div class="pd-local">📍 ' + d.Local + '</div>' : '') +
     '</div>' +
     (d['Descrição'] ? '<div class="pd-desc">' + d['Descrição'] + '</div>' : '') +
     '<div class="pd-conn-list">' +
@@ -605,9 +613,11 @@ function selectNode(name) {
   drawMatrix(idx);
   showNodeDetail(name);
 
-  // Scroll to center on selected node
-  var area = document.getElementById('canvas-area');
-  var labelSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--label-size')) || LABEL_PAD;
+  var area      = document.getElementById('canvas-area');
+  var labelSize = parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue('--label-size')
+  ) || 70;
+
   area.scrollTo({
     top:  Math.max(0, labelSize + idx * CELL - area.clientHeight / 2),
     left: Math.max(0, labelSize + idx * CELL - area.clientWidth  / 2),
