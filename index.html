@@ -1,1 +1,131 @@
-<p><a title="diagram" href="diagram.html"><strong>acessar diagrama</strong></a></p>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conexões da História</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: #0f1923;
+      color: #f0e6d3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hero { max-width: 680px; }
+
+    .badge {
+      display: inline-block;
+      background: rgba(232, 168, 56, 0.1);
+      border: 1px solid rgba(232, 168, 56, 0.4);
+      color: #e8a838;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 1.75rem;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    h1 span { color: #e8a838; }
+
+    .subtitle {
+      font-size: 1rem;
+      font-weight: 300;
+      color: #7a8a9a;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .categories {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .category {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid #1e2a38;
+      border-radius: 6px;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.8rem;
+      color: #7a8a9a;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .cta {
+      display: inline-block;
+      background: #e8a838;
+      color: #0f1923;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      padding: 0.85rem 2.5rem;
+      border-radius: 7px;
+      transition: background 0.15s;
+    }
+    .cta:hover { background: #f0bc50; }
+
+    .footer {
+      margin-top: 4rem;
+      font-size: 0.75rem;
+      color: #3a4a5a;
+    }
+    .footer a {
+      color: #4a6a7a;
+      text-decoration: none;
+    }
+    .footer a:hover { color: #7a9aaa; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="badge">D3.js · Recife · Pernambuco</div>
+    <h1>Conexões<br><span>da História</span></h1>
+    <p class="subtitle">
+      Um mapa interativo das interconexões entre locais históricos, personagens e eventos
+      que moldaram o Recife e Pernambuco. Descubra como lugares e momentos aparentemente
+      desconexos estão profundamente ligados através do tempo.
+    </p>
+    <div class="categories">
+      <div class="category"><div class="dot" style="background:#4a90d9"></div> Locais</div>
+      <div class="category"><div class="dot" style="background:#e8833a"></div> Personagens</div>
+      <div class="category"><div class="dot" style="background:#5cb85c"></div> Fatos Históricos</div>
+    </div>
+    <a class="cta" href="diagram.html">Explorar o Diagrama</a>
+  </div>
+  <div class="footer">
+    Projeto por <a href="https://conexoesdahistoria.com/" target="_blank">Antonio Aureliano</a>
+    &nbsp;·&nbsp;
+    <a href="https://conexoesdahistoria.com/" target="_blank">conexoesdahistoria.com</a>
+  </div>
+</body>
+</html>
