@@ -218,11 +218,9 @@
 
     /* ── Minimap ── */
     .minimap-wrap {
-      position: absolute;
-      top: 10px;
-      right: calc(var(--panel-w) + 12px);
-      z-index: 30;
-      background: rgba(8, 14, 20, 0.93);
+      position: fixed;
+      z-index: 50;
+      background: rgba(8, 14, 20, 0.95);
       border: 1px solid #2a3d52;
       border-radius: 6px;
       padding: 4px;
@@ -393,7 +391,21 @@
   <!-- Detail panel -->
   <div id="panel">
     <div class="panel-placeholder" id="panel-placeholder">
-      <p>Clique em um nó para ver seus detalhes e conexões agrupadas por categoria.</p>
+      <p>Clique em qualquer <strong style="color:#c0b0a0">linha ou célula</strong> da matrix para ver os detalhes e as conexões agrupadas por:</p>
+      <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem;text-align:left;width:100%">
+        <div style="display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:#7a8a90">
+          <div style="width:8px;height:8px;border-radius:50%;background:#4a90d9;flex-shrink:0"></div>
+          Local — <em style="color:#4a6070">Loca Historica</em>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:#7a8a90">
+          <div style="width:8px;height:8px;border-radius:50%;background:#e8833a;flex-shrink:0"></div>
+          Personagem — <em style="color:#4a6070">Personae Illustres</em>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:#7a8a90">
+          <div style="width:8px;height:8px;border-radius:50%;background:#5cb85c;flex-shrink:0"></div>
+          Fato Histórico — <em style="color:#4a6070">Res Gestae</em>
+        </div>
+      </div>
     </div>
     <div id="panel-content"></div>
   </div>
@@ -431,6 +443,18 @@ var minimapEl   = document.getElementById('minimap');
 var minimapCtx  = minimapEl.getContext('2d');
 var tooltip     = document.getElementById('tooltip');
 var canvasArea  = document.getElementById('canvas-area');
+
+/* ── Minimap position (fixed, above the panel) ────────────────────────────── */
+function positionMinimap() {
+  var headerH  = document.querySelector('header').offsetHeight;
+  var toolbarH = document.querySelector('.toolbar').offsetHeight;
+  var wrap = document.getElementById('minimap-wrap');
+  wrap.style.top   = (headerH + toolbarH + 10) + 'px';
+  wrap.style.right = (parseInt(getComputedStyle(document.documentElement)
+                        .getPropertyValue('--panel-w')) + 12) + 'px';
+}
+window.addEventListener('load',   positionMinimap);
+window.addEventListener('resize', positionMinimap);
 
 /* ── Load CSV ─────────────────────────────────────────────────────────────── */
 d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
