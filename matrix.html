@@ -514,10 +514,21 @@ function getLabelSize() {
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--label-size')) || 70;
 }
 
+function computeLabelSize(fontPx) {
+  var offscreen = document.createElement('canvas').getContext('2d');
+  offscreen.font = fontPx + 'px Raleway, sans-serif';
+  var maxW = 0;
+  names.forEach(function(n) {
+    var w = offscreen.measureText(n).width;
+    if (w > maxW) maxW = w;
+  });
+  return Math.ceil(maxW) + 14; // 14px breathing room
+}
+
 function applyZoom(newCell) {
   CELL = Math.max(MIN_CELL, Math.min(MAX_CELL, newCell));
-  var labelSize = Math.max(60,  Math.min(200, CELL * 14));
-  var labelFont = Math.max(7,   Math.min(15,  CELL * 1.9));
+  var labelFont = Math.max(7, Math.min(15, CELL * 1.9));
+  var labelSize = names.length ? computeLabelSize(labelFont) : Math.max(120, CELL * 14);
 
   var root = document.documentElement;
   root.style.setProperty('--cell-size',  CELL      + 'px');
