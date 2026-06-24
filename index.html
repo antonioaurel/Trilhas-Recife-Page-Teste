@@ -100,6 +100,32 @@
     .cat-name  { font-size: 0.8rem; color: #444; }
     .cat-latin { font-size: 0.65rem; color: #bbb; font-style: italic; letter-spacing: 0.5px; }
 
+    .hero-quote {
+      font-style: italic;
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      border-left: 2px solid rgba(184,112,16,0.35);
+      padding-left: 1.25rem;
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+
+    .hero-body {
+      font-size: 0.92rem;
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .hero-meta {
+      font-size: 0.76rem;
+      color: #aaa;
+      line-height: 1.7;
+      margin-bottom: 2.25rem;
+    }
+    .hero-meta em { color: #999; font-style: normal; font-weight: 600; }
+
     /* ── Cards section ── */
     .explore {
       max-width: 1040px;
@@ -183,6 +209,7 @@
       line-height: 1.65;
       margin-bottom: 1.25rem;
     }
+    .card-desc strong { color: #666; font-weight: 600; }
 
     .how-label {
       font-size: 0.58rem;
@@ -255,6 +282,27 @@
     que moldaram o Recife e Pernambuco. Descubra como lugares e momentos aparentemente
     desconexos estão profundamente ligados através do tempo.
   </p>
+
+  <blockquote class="hero-quote">
+    E qual a ligação desse forte com o Convento de Santo Antônio, na Rua do Imperador?
+    E por que Rua do Imperador? E o que ela teria a ver com a primeira travessia por avião
+    do Atlântico Sul? Ou com o Tenentismo? Ou com a Revolução de 30?
+  </blockquote>
+
+  <p class="hero-body">
+    Com centenas de links informacionais, o <em>Conexões da História</em> é um mapa da fascinante
+    ligação entre locais, eventos e personagens que definiram o nosso presente e influenciam
+    o nosso futuro.
+  </p>
+
+  <p class="hero-meta">
+    Este projeto utiliza a base interconectada do Recife como laboratório de
+    <em>visualização de dados</em> e <em>qualidade de dados</em> — mapeando lacunas,
+    inconsistências e oportunidades de curadoria no acervo.<br>
+    Fontes principais: <em>Trilhas do Recife</em>, <em>Ruas do Recife</em>
+    e <em>Pernambucanidade</em>.
+  </p>
+
   <div class="categories">
     <div class="category">
       <div class="dot" style="background:#4a90d9"></div>
@@ -510,7 +558,7 @@
       <div class="card-body">
         <div class="card-tag">Qualidade dos dados</div>
         <h2 class="card-title">Fill Rate do Schema</h2>
-        <p class="card-desc">Bullet chart mostrando a cobertura de cada campo dos 564 registros: total de preenchidos, total de vazios e percentual.</p>
+        <p class="card-desc">Bullet chart mostrando a cobertura de cada campo dos 564 registros: total de preenchidos, total de vazios e percentual. Utilizado para <strong>monitorar a qualidade dos dados</strong> usados e orientar ações corretivas de curadoria.</p>
         <div class="how-label">Como usar</div>
         <ul class="how-steps">
           <li><div class="step-icon">▌</div><span>Barra âmbar = registros preenchidos; fundo claro = registros vazios</span></li>
