@@ -9,9 +9,10 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --cell-size:  5px;
-      --label-size: 70px;
-      --label-font: 9px;
+      --cell-size:  12px;
+      --label-size: 168px;
+      --label-font: 10px;
+      --panel-w:    290px;
     }
 
     body {
@@ -34,17 +35,9 @@
       align-items: center;
       gap: 1rem;
     }
-
-    .back-link {
-      color: #c0b0a0;
-      text-decoration: none;
-      font-size: 0.8rem;
-      white-space: nowrap;
-      transition: color 0.15s;
-    }
+    .back-link { color: #c0b0a0; text-decoration: none; font-size: 0.8rem; transition: color .15s; }
     .back-link:hover { color: #e8a838; }
-
-    .header-title { font-size: 0.95rem; font-weight: 600; white-space: nowrap; color: #f0e6d3; }
+    .header-title { font-size: 0.95rem; font-weight: 600; color: #f0e6d3; }
     .header-title span { color: #e8a838; }
 
     /* ── Toolbar ── */
@@ -52,59 +45,59 @@
       flex-shrink: 0;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.55rem 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding: 0.5rem 1.25rem;
       background: #111b27;
       border-bottom: 1px solid #1a2535;
     }
 
-    #search {
+    .tb-input {
       background: #0f1923;
       border: 1px solid #2a3d52;
       border-radius: 6px;
       color: #f0e6d3;
       font-family: 'Raleway', sans-serif;
-      font-size: 0.82rem;
-      padding: 0.38rem 0.75rem;
-      width: 220px;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.7rem;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color .15s;
     }
-    #search::placeholder { color: #5a6a7a; }
-    #search:focus { border-color: #e8a838; }
+    .tb-input::placeholder { color: #4a6070; }
+    .tb-input:focus { border-color: #e8a838; }
+    #search    { width: 190px; }
+    #filter-in { width: 180px; }
 
-    .toolbar-stats { font-size: 0.72rem; color: #a09080; }
+    .tb-clear {
+      background: none;
+      border: 1px solid #2a3d52;
+      border-radius: 5px;
+      color: #a09080;
+      cursor: pointer;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.55rem;
+      transition: color .12s, border-color .12s;
+      line-height: 1;
+    }
+    .tb-clear:hover { color: #e8a838; border-color: #e8a838; }
+    .tb-clear.hidden { display: none; }
+
+    .tb-label { font-size: 0.68rem; color: #5a7080; white-space: nowrap; }
+    .tb-sep   { width: 1px; height: 22px; background: #1e2d3d; flex-shrink: 0; }
+
+    .toolbar-stats { font-size: 0.72rem; color: #a09080; white-space: nowrap; }
     .toolbar-stats strong { color: #c0b0a0; }
 
-    .zoom-group {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      margin-left: auto;
-    }
-
+    .zoom-group { display: flex; align-items: center; gap: 0.35rem; margin-left: auto; }
     .zoom-label { font-size: 0.7rem; color: #a09080; white-space: nowrap; }
-
     .zoom-btn {
-      background: #1a2d3d;
-      border: 1px solid #2a3d52;
-      color: #c0b0a0;
-      font-size: 1rem;
-      width: 28px;
-      height: 28px;
-      border-radius: 5px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.12s, color 0.12s;
-      user-select: none;
+      background: #1a2d3d; border: 1px solid #2a3d52; color: #c0b0a0;
+      font-size: 1rem; width: 26px; height: 26px; border-radius: 5px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .12s, color .12s; user-select: none;
     }
     .zoom-btn:hover { background: #243d52; color: #e8a838; }
-
     #zoom-level { font-size: 0.72rem; color: #c0b0a0; min-width: 36px; text-align: center; }
-
-    .hover-info { font-size: 0.72rem; color: #a09080; min-width: 260px; text-align: right; }
 
     /* ── Workspace ── */
     .workspace {
@@ -112,6 +105,7 @@
       flex: 1;
       overflow: hidden;
       min-height: 0;
+      position: relative;
     }
 
     /* ── Canvas scroll area ── */
@@ -121,7 +115,6 @@
       min-width: 0;
       background: #0d1720;
     }
-
     .canvas-area::-webkit-scrollbar { width: 7px; height: 7px; }
     .canvas-area::-webkit-scrollbar-track { background: #0a1018; }
     .canvas-area::-webkit-scrollbar-thumb { background: #2a3d52; border-radius: 4px; }
@@ -134,7 +127,7 @@
       min-width: max-content;
     }
 
-    /* Row 1: corner + column headers — sticky at top */
+    /* Header row: sticky top */
     .header-row {
       display: flex;
       position: sticky;
@@ -142,7 +135,7 @@
       z-index: 3;
     }
 
-    /* Top-left corner — sticky at top AND left */
+    /* Corner: sticky top-left */
     .corner {
       flex-shrink: 0;
       width:  var(--label-size);
@@ -155,7 +148,7 @@
       border-bottom: 1px solid #1e2d3d;
     }
 
-    /* Column label strip */
+    /* Column labels */
     #col-labels {
       display: flex;
       align-items: flex-end;
@@ -163,7 +156,6 @@
       background: #0d1720;
       border-bottom: 1px solid #1e2d3d;
     }
-
     .col-label {
       writing-mode: vertical-rl;
       transform: rotate(180deg);
@@ -175,15 +167,17 @@
       max-height: calc(var(--label-size) - 4px);
       line-height: 1.1;
       cursor: pointer;
-      transition: color 0.1s;
+      transition: color .1s, opacity .2s;
       width: var(--cell-size);
     }
-    .col-label:hover     { color: #e8a838; }
+    .col-label:hover       { color: #e8a838; }
     .col-label.highlighted { color: #e8a838; font-weight: 700; }
+    .col-label.dimmed      { opacity: 0.2; }
 
-    /* Body row: row labels (sticky left) + canvas */
+    /* Body row */
     .body-row { display: flex; }
 
+    /* Row labels: sticky left */
     #row-labels {
       flex-shrink: 0;
       width: var(--label-size);
@@ -195,7 +189,6 @@
       background: #0d1720;
       border-right: 1px solid #1e2d3d;
     }
-
     .row-label {
       font-size: var(--label-font);
       color: #c0b0a0;
@@ -207,14 +200,15 @@
       text-align: right;
       padding-right: 5px;
       cursor: pointer;
-      transition: color 0.1s;
+      transition: color .1s, opacity .2s;
       height: var(--cell-size);
       display: flex;
       align-items: center;
       justify-content: flex-end;
     }
-    .row-label:hover     { color: #e8a838; }
+    .row-label:hover       { color: #e8a838; }
     .row-label.highlighted { color: #e8a838; font-weight: 700; }
+    .row-label.dimmed      { opacity: 0.2; }
 
     canvas#matrix {
       display: block;
@@ -222,10 +216,39 @@
       image-rendering: pixelated;
     }
 
+    /* ── Minimap ── */
+    .minimap-wrap {
+      position: absolute;
+      top: 10px;
+      right: calc(var(--panel-w) + 12px);
+      z-index: 30;
+      background: rgba(8, 14, 20, 0.93);
+      border: 1px solid #2a3d52;
+      border-radius: 6px;
+      padding: 4px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      cursor: crosshair;
+    }
+    .minimap-title {
+      font-size: 0.6rem;
+      color: #5a7080;
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    #minimap {
+      display: block;
+      width:  160px;
+      height: 160px;
+      image-rendering: pixelated;
+      border-radius: 2px;
+    }
+
     /* ── Tooltip ── */
     #tooltip {
       position: fixed;
-      background: rgba(8, 14, 20, 0.97);
+      background: rgba(8,14,20,0.97);
       border: 1px solid #2a3d52;
       border-radius: 5px;
       padding: 0.45rem 0.75rem;
@@ -245,7 +268,7 @@
 
     /* ── Right panel ── */
     #panel {
-      width: 285px;
+      width: var(--panel-w);
       flex-shrink: 0;
       background: #111b27;
       border-left: 1px solid #1a2535;
@@ -253,77 +276,63 @@
       flex-direction: column;
       overflow: hidden;
     }
-
     .panel-placeholder {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1.5rem;
-      text-align: center;
-      gap: 0.75rem;
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 2rem 1.5rem; text-align: center; gap: .75rem;
     }
     .panel-placeholder p { font-size: 0.78rem; line-height: 1.7; color: #7a8a90; }
 
-    #panel-content {
-      display: none;
-      flex-direction: column;
-      height: 100%;
-      overflow: hidden;
-    }
+    #panel-content { display: none; flex-direction: column; height: 100%; overflow: hidden; }
 
-    .pd-header { padding: 0.85rem 1rem; border-bottom: 1px solid #1a2535; flex-shrink: 0; }
-
-    .pd-type {
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #e8a838;
-      margin-bottom: 0.35rem;
-    }
-
+    .pd-header { padding: .85rem 1rem; border-bottom: 1px solid #1a2535; flex-shrink: 0; }
+    .pd-type { font-size: .6rem; text-transform: uppercase; letter-spacing: 2px; color: #e8a838; margin-bottom: .35rem; }
     .pd-name { font-size: 1rem; font-weight: 600; color: #f0e6d3; line-height: 1.3; }
-
-    .pd-local { font-size: 0.7rem; color: #a09080; margin-top: 0.25rem; }
+    .pd-local { font-size: .7rem; color: #a09080; margin-top: .25rem; }
 
     .pd-desc {
-      padding: 0.75rem 1rem;
-      font-size: 0.76rem;
-      line-height: 1.7;
-      color: #c0b0a0;
+      padding: .75rem 1rem;
+      font-size: .76rem; line-height: 1.7; color: #c0b0a0;
       border-bottom: 1px solid #1a2535;
-      flex-shrink: 0;
-      max-height: 130px;
-      overflow-y: auto;
+      flex-shrink: 0; max-height: 120px; overflow-y: auto;
     }
 
-    .pd-conn-list { flex: 1; overflow-y: auto; padding: 0.65rem 0.9rem 1rem; }
+    .pd-conn-list { flex: 1; overflow-y: auto; padding: .6rem .9rem 1rem; }
     .pd-conn-list::-webkit-scrollbar { width: 3px; }
     .pd-conn-list::-webkit-scrollbar-thumb { background: #2a3d52; }
 
-    .pd-conn-label {
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #5a6a70;
-      margin-bottom: 0.5rem;
-      padding-bottom: 0.4rem;
+    .pd-conn-total {
+      font-size: .6rem; text-transform: uppercase; letter-spacing: 2px;
+      color: #5a6a70; margin-bottom: .6rem; padding-bottom: .4rem;
       border-bottom: 1px solid #1a2535;
     }
 
+    /* Connection groups */
+    .conn-group { margin-bottom: .85rem; }
+
+    .conn-group-header {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .3rem .4rem .3rem .6rem;
+      border-left: 2px solid #2a3d52;
+      margin-bottom: .3rem;
+    }
+    .cg-dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .cg-name { font-size: .72rem; color: #c0b0a0; font-weight: 600; }
+    .cg-latin { font-size: .6rem; color: #5a6a70; font-style: italic; margin-left: .2rem; }
+    .cg-count { font-size: .64rem; color: #5a6a70; margin-left: auto; }
+
     .conn-item {
-      font-size: 0.76rem;
-      color: #c0b0a0;
-      padding: 0.3rem 0.4rem;
-      border-radius: 4px;
-      cursor: pointer;
+      font-size: .75rem; color: #c0b0a0;
+      padding: .28rem .4rem .28rem .8rem;
+      border-radius: 4px; cursor: pointer;
       border: 1px solid transparent;
-      transition: background 0.1s, border-color 0.1s, color 0.1s;
+      transition: background .1s, border-color .1s, color .1s;
     }
     .conn-item:hover {
-      background: rgba(232,168,56,0.07);
-      border-color: rgba(232,168,56,0.25);
+      background: rgba(232,168,56,.07);
+      border-color: rgba(232,168,56,.25);
       color: #e8a838;
     }
   </style>
@@ -336,32 +345,37 @@
 </header>
 
 <div class="toolbar">
-  <input id="search" type="text" placeholder="Buscar nó…" autocomplete="off">
+  <span class="tb-label">Buscar</span>
+  <input id="search"    class="tb-input" type="text" placeholder="Nome do nó…"     autocomplete="off">
+
+  <div class="tb-sep"></div>
+
+  <span class="tb-label">Filtrar</span>
+  <input id="filter-in" class="tb-input" type="text" placeholder="Nós a destacar…" autocomplete="off">
+  <button id="filter-clear" class="tb-clear hidden" title="Limpar filtro">✕</button>
+
+  <div class="tb-sep"></div>
   <div class="toolbar-stats" id="stats">Carregando…</div>
 
   <div class="zoom-group">
     <span class="zoom-label">Zoom</span>
-    <button class="zoom-btn" id="zoom-out" title="Diminuir">−</button>
-    <div id="zoom-level">5px</div>
-    <button class="zoom-btn" id="zoom-in"  title="Aumentar">+</button>
+    <button class="zoom-btn" id="zoom-out">−</button>
+    <div id="zoom-level">12px</div>
+    <button class="zoom-btn" id="zoom-in">+</button>
   </div>
-
-  <div class="hover-info" id="hover-info">Passe o mouse sobre a matrix</div>
 </div>
 
 <div class="workspace">
 
-  <!-- Scrollable area with frozen panes -->
+  <!-- Main scrollable matrix with frozen panes -->
   <div class="canvas-area" id="canvas-area">
     <div class="matrix-outer">
 
-      <!-- Row 1: frozen header (corner + col labels) -->
       <div class="header-row">
         <div class="corner"></div>
         <div id="col-labels"></div>
       </div>
 
-      <!-- Row 2: frozen left (row labels) + canvas -->
       <div class="body-row">
         <div id="row-labels"></div>
         <canvas id="matrix"></canvas>
@@ -370,12 +384,20 @@
     </div>
   </div>
 
+  <!-- Minimap (always visible, top-right of canvas area) -->
+  <div class="minimap-wrap" id="minimap-wrap">
+    <div class="minimap-title">Visão Geral</div>
+    <canvas id="minimap"></canvas>
+  </div>
+
+  <!-- Detail panel -->
   <div id="panel">
     <div class="panel-placeholder" id="panel-placeholder">
-      <p>Clique em qualquer linha ou célula para ver os detalhes e conexões do nó.</p>
+      <p>Clique em um nó para ver seus detalhes e conexões agrupadas por categoria.</p>
     </div>
     <div id="panel-content"></div>
   </div>
+
 </div>
 
 <div id="tooltip"></div>
@@ -383,33 +405,49 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
+/* ── Constants ────────────────────────────────────────────────────────────── */
 var CELL     = 12;
 var MIN_CELL = 2;
-var MAX_CELL = 24;
+var MAX_CELL = 28;
 
+var TIPO_META = {
+  'Local':           { label: 'Local',           latin: 'Loca Historica',     color: '#4a90d9' },
+  'Personagem':      { label: 'Personagem',       latin: 'Personae Illustres', color: '#e8833a' },
+  'Fato Histórico':  { label: 'Fato Histórico',   latin: 'Res Gestae',         color: '#5cb85c' },
+};
+function tipoMeta(tipo) {
+  return TIPO_META[tipo] || { label: tipo || 'Outro', latin: 'Alia', color: '#9b59b6' };
+}
+
+/* ── State ────────────────────────────────────────────────────────────────── */
 var names = [], nodeData = {}, adjMatrix, N;
 var selectedRow = -1;
+var filterIndices = null; // null = no filter, Set = active filter
 
-var canvas  = document.getElementById('matrix');
-var ctx     = canvas.getContext('2d');
-var tooltip = document.getElementById('tooltip');
+/* ── DOM refs ─────────────────────────────────────────────────────────────── */
+var canvas      = document.getElementById('matrix');
+var ctx         = canvas.getContext('2d');
+var minimapEl   = document.getElementById('minimap');
+var minimapCtx  = minimapEl.getContext('2d');
+var tooltip     = document.getElementById('tooltip');
+var canvasArea  = document.getElementById('canvas-area');
 
-// ── Load CSV ─────────────────────────────────────────────────────────────────
+/* ── Load CSV ─────────────────────────────────────────────────────────────── */
 d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
   if (error) { console.error(error); return; }
 
   names = graph.map(function(r) { return r.Nome; });
   N = names.length;
 
-  var nameIndex = {};
-  names.forEach(function(n, i) { nameIndex[n] = i; nodeData[n] = graph[i]; });
+  var nameIdx = {};
+  names.forEach(function(n, i) { nameIdx[n] = i; nodeData[n] = graph[i]; });
 
   adjMatrix = new Uint8Array(N * N);
   graph.forEach(function(row) {
-    var i = nameIndex[row.Nome];
+    var i = nameIdx[row.Nome];
     Object.keys(row).forEach(function(k) {
       if (k.startsWith('Intercon') && row[k].trim() !== '') {
-        var j = nameIndex[row[k].trim()];
+        var j = nameIdx[row[k].trim()];
         if (j !== undefined) { adjMatrix[i * N + j] = 1; adjMatrix[j * N + i] = 1; }
       }
     });
@@ -417,44 +455,45 @@ d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
 
   var total = 0;
   for (var x = 0; x < adjMatrix.length; x++) { if (adjMatrix[x]) total++; }
-
   document.getElementById('stats').innerHTML =
     '<strong>' + N + '</strong> nós · <strong>' + (total / 2) + '</strong> conexões';
+
+  // Setup minimap canvas (physical N×N → CSS 160×160)
+  minimapEl.width  = N;
+  minimapEl.height = N;
 
   buildLabels();
   applyZoom(CELL);
 });
 
-// ── Build axis labels (once) ──────────────────────────────────────────────────
+/* ── Build axis labels ────────────────────────────────────────────────────── */
 function buildLabels() {
   var colWrap = document.getElementById('col-labels');
   var rowWrap = document.getElementById('row-labels');
-
   names.forEach(function(name, i) {
     var c = document.createElement('div');
-    c.className  = 'col-label';
-    c.id         = 'cl-' + i;
-    c.title      = name;
-    c.textContent = name;
+    c.className = 'col-label'; c.id = 'cl-' + i;
+    c.title = name; c.textContent = name;
     c.addEventListener('click', function() { selectNode(name); });
     colWrap.appendChild(c);
 
     var r = document.createElement('div');
-    r.className  = 'row-label';
-    r.id         = 'rl-' + i;
-    r.title      = name;
-    r.textContent = name;
+    r.className = 'row-label'; r.id = 'rl-' + i;
+    r.title = name; r.textContent = name;
     r.addEventListener('click', function() { selectNode(name); });
     rowWrap.appendChild(r);
   });
 }
 
-// ── Zoom ──────────────────────────────────────────────────────────────────────
+/* ── Zoom ─────────────────────────────────────────────────────────────────── */
+function getLabelSize() {
+  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--label-size')) || 70;
+}
+
 function applyZoom(newCell) {
   CELL = Math.max(MIN_CELL, Math.min(MAX_CELL, newCell));
-
-  var labelSize = Math.max(60, Math.min(180, CELL * 14));
-  var labelFont = Math.max(7,  Math.min(14,  CELL * 1.9));
+  var labelSize = Math.max(60,  Math.min(200, CELL * 14));
+  var labelFont = Math.max(7,   Math.min(15,  CELL * 1.9));
 
   var root = document.documentElement;
   root.style.setProperty('--cell-size',  CELL      + 'px');
@@ -463,28 +502,25 @@ function applyZoom(newCell) {
 
   canvas.width  = N * CELL;
   canvas.height = N * CELL;
-  drawMatrix(selectedRow >= 0 ? selectedRow : undefined);
 
   document.getElementById('zoom-level').textContent = CELL + 'px';
+  redraw();
 }
 
 document.getElementById('zoom-in').addEventListener('click',  function() { applyZoom(CELL + (CELL < 8 ? 1 : 2)); });
 document.getElementById('zoom-out').addEventListener('click', function() { applyZoom(CELL - (CELL <= 8 ? 1 : 2)); });
-
-document.getElementById('canvas-area').addEventListener('wheel', function(e) {
-  if (e.ctrlKey || e.metaKey) {
-    e.preventDefault();
-    applyZoom(e.deltaY < 0 ? CELL + 1 : CELL - 1);
-  }
+canvasArea.addEventListener('wheel', function(e) {
+  if (e.ctrlKey || e.metaKey) { e.preventDefault(); applyZoom(e.deltaY < 0 ? CELL + 1 : CELL - 1); }
 }, { passive: false });
 
-// ── Draw ──────────────────────────────────────────────────────────────────────
+/* ── Draw main matrix ─────────────────────────────────────────────────────── */
 function drawMatrix(highlightIdx) {
   ctx.fillStyle = '#0d1720';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  // Grid lines at large zoom
   if (CELL >= 6) {
-    ctx.strokeStyle = 'rgba(30,45,60,0.5)';
+    ctx.strokeStyle = 'rgba(30,45,60,0.45)';
     ctx.lineWidth = 0.5;
     for (var g = 0; g <= N; g += 10) {
       ctx.beginPath();
@@ -494,18 +530,29 @@ function drawMatrix(highlightIdx) {
     }
   }
 
+  // Highlight band
   if (highlightIdx !== undefined) {
     ctx.fillStyle = 'rgba(232,168,56,0.06)';
     ctx.fillRect(0, highlightIdx * CELL, canvas.width, CELL);
     ctx.fillRect(highlightIdx * CELL, 0, CELL, canvas.height);
   }
 
+  var gap = CELL > 4 ? 1 : 0;
+
   for (var i = 0; i < N; i++) {
     for (var j = 0; j < N; j++) {
       if (!adjMatrix[i * N + j]) continue;
-      var hi = highlightIdx !== undefined && (i === highlightIdx || j === highlightIdx);
-      ctx.fillStyle = hi ? '#f5c842' : '#e8a838';
-      var gap = CELL > 4 ? 1 : 0;
+
+      var inFilter  = !filterIndices || filterIndices.has(i) || filterIndices.has(j);
+      var isHighlight = highlightIdx !== undefined && (i === highlightIdx || j === highlightIdx);
+
+      if (!inFilter) {
+        ctx.fillStyle = 'rgba(232,168,56,0.07)';
+      } else if (isHighlight) {
+        ctx.fillStyle = '#f5c842';
+      } else {
+        ctx.fillStyle = '#e8a838';
+      }
       ctx.fillRect(j * CELL, i * CELL, CELL - gap, CELL - gap);
     }
   }
@@ -516,24 +563,97 @@ function drawMatrix(highlightIdx) {
   }
 }
 
-// ── Mouse events ──────────────────────────────────────────────────────────────
+/* ── Draw minimap ─────────────────────────────────────────────────────────── */
+function drawMinimap(highlightIdx) {
+  // Physical canvas is N×N (1px per node)
+  minimapCtx.fillStyle = '#0d1720';
+  minimapCtx.fillRect(0, 0, N, N);
+
+  // Highlight band
+  if (highlightIdx !== undefined) {
+    minimapCtx.fillStyle = 'rgba(232,168,56,0.18)';
+    minimapCtx.fillRect(0, highlightIdx, N, 1);
+    minimapCtx.fillRect(highlightIdx, 0, 1, N);
+  }
+
+  // Connections
+  for (var i = 0; i < N; i++) {
+    for (var j = 0; j < N; j++) {
+      if (!adjMatrix[i * N + j]) continue;
+      var inFilter  = !filterIndices || filterIndices.has(i) || filterIndices.has(j);
+      var isHi = highlightIdx !== undefined && (i === highlightIdx || j === highlightIdx);
+
+      if (!inFilter) {
+        minimapCtx.fillStyle = 'rgba(232,168,56,0.12)';
+      } else if (isHi) {
+        minimapCtx.fillStyle = '#f5c842';
+      } else {
+        minimapCtx.fillStyle = '#e8a838';
+      }
+      minimapCtx.fillRect(j, i, 1, 1);
+    }
+  }
+
+  drawMinimapViewport();
+}
+
+function drawMinimapViewport() {
+  var labelSize = getLabelSize();
+  var startX = Math.max(0, canvasArea.scrollLeft  / CELL);
+  var startY = Math.max(0, canvasArea.scrollTop   / CELL);
+  var visW   = (canvasArea.clientWidth  - labelSize) / CELL;
+  var visH   = (canvasArea.clientHeight - labelSize) / CELL;
+
+  minimapCtx.strokeStyle = 'rgba(255,255,255,0.65)';
+  minimapCtx.lineWidth = 1.5;
+  minimapCtx.strokeRect(
+    Math.max(0, startX),
+    Math.max(0, startY),
+    Math.min(visW, N - startX),
+    Math.min(visH, N - startY)
+  );
+}
+
+function redraw() {
+  var hi = selectedRow >= 0 ? selectedRow : undefined;
+  drawMatrix(hi);
+  drawMinimap(hi);
+}
+
+/* ── Scroll → update minimap viewport ────────────────────────────────────── */
+canvasArea.addEventListener('scroll', function() {
+  if (!N) return;
+  var hi = selectedRow >= 0 ? selectedRow : undefined;
+  // Only redraw viewport rect on minimap (cheap)
+  minimapCtx.clearRect(0, 0, N, N);
+  drawMinimap(hi);
+});
+
+/* ── Minimap click → navigate ─────────────────────────────────────────────── */
+document.getElementById('minimap-wrap').addEventListener('click', function(e) {
+  if (!N) return;
+  var rect   = minimapEl.getBoundingClientRect();
+  var nodeX  = Math.round((e.clientX - rect.left)  / rect.width  * N);
+  var nodeY  = Math.round((e.clientY - rect.top)   / rect.height * N);
+  var labelSize = getLabelSize();
+  canvasArea.scrollTo({
+    left: Math.max(0, labelSize + nodeX * CELL - canvasArea.clientWidth  / 2),
+    top:  Math.max(0, labelSize + nodeY * CELL - canvasArea.clientHeight / 2),
+    behavior: 'smooth'
+  });
+});
+
+/* ── Mouse events ─────────────────────────────────────────────────────────── */
 canvas.addEventListener('mousemove', function(e) {
   var rect = canvas.getBoundingClientRect();
   var scaleX = canvas.width  / rect.width;
   var scaleY = canvas.height / rect.height;
   var col = Math.floor((e.clientX - rect.left) * scaleX / CELL);
   var row = Math.floor((e.clientY - rect.top)  * scaleY / CELL);
-
   if (col < 0 || col >= N || row < 0 || row >= N) { hideTooltip(); return; }
 
   var connected = adjMatrix[row * N + col] === 1;
   var same      = row === col;
-
-  document.getElementById('hover-info').innerHTML =
-    '<span style="color:#e0c898">' + names[row] + '</span>' +
-    ' → ' +
-    '<span style="color:#a0c0a8">' + names[col] + '</span>' +
-    (connected && !same ? ' <span style="color:#e8a838">✓</span>' : '');
 
   tooltip.style.display = 'block';
   tooltip.style.left = (e.clientX + 16) + 'px';
@@ -546,10 +666,7 @@ canvas.addEventListener('mousemove', function(e) {
                : '<div class="tt-none">Sem conexão</div>');
 });
 
-canvas.addEventListener('mouseleave', function() {
-  hideTooltip();
-  document.getElementById('hover-info').textContent = 'Passe o mouse sobre a matrix';
-});
+canvas.addEventListener('mouseleave', hideTooltip);
 
 canvas.addEventListener('click', function(e) {
   var rect   = canvas.getBoundingClientRect();
@@ -560,7 +677,7 @@ canvas.addEventListener('click', function(e) {
 
 function hideTooltip() { tooltip.style.display = 'none'; }
 
-// ── Highlight labels ──────────────────────────────────────────────────────────
+/* ── Label highlight ──────────────────────────────────────────────────────── */
 function highlightLabel(idx) {
   document.querySelectorAll('.col-label.highlighted, .row-label.highlighted')
     .forEach(function(el) { el.classList.remove('highlighted'); });
@@ -572,22 +689,84 @@ function highlightLabel(idx) {
   }
 }
 
-// ── Detail panel ──────────────────────────────────────────────────────────────
+/* ── Filter ───────────────────────────────────────────────────────────────── */
+document.getElementById('filter-in').addEventListener('input', function() {
+  var q = this.value.trim().toLowerCase();
+  var clearBtn = document.getElementById('filter-clear');
+
+  if (!q) {
+    filterIndices = null;
+    clearBtn.classList.add('hidden');
+    document.querySelectorAll('.col-label, .row-label').forEach(function(el) {
+      el.classList.remove('dimmed');
+    });
+  } else {
+    filterIndices = new Set();
+    names.forEach(function(n, i) {
+      if (n.toLowerCase().includes(q)) filterIndices.add(i);
+    });
+    clearBtn.classList.remove('hidden');
+    // Dim non-matching labels
+    names.forEach(function(n, i) {
+      var inF = filterIndices.has(i);
+      var cl = document.getElementById('cl-' + i);
+      var rl = document.getElementById('rl-' + i);
+      if (cl) cl.classList.toggle('dimmed', !inF);
+      if (rl) rl.classList.toggle('dimmed', !inF);
+    });
+  }
+
+  redraw();
+});
+
+document.getElementById('filter-clear').addEventListener('click', function() {
+  document.getElementById('filter-in').value = '';
+  document.getElementById('filter-in').dispatchEvent(new Event('input'));
+});
+
+/* ── Detail panel with grouped connections ────────────────────────────────── */
 function showNodeDetail(name) {
   var d = nodeData[name];
   if (!d) return;
 
   document.getElementById('panel-placeholder').style.display = 'none';
 
-  var idx = names.indexOf(name);
+  var idx   = names.indexOf(name);
   var conns = [];
   for (var j = 0; j < N; j++) { if (adjMatrix[idx * N + j]) conns.push(names[j]); }
 
-  var connItems = conns.length
-    ? conns.map(function(cn) {
-        return '<div class="conn-item" onclick="selectNode(\'' + cn.replace(/'/g, "\\'") + '\')">' + cn + '</div>';
-      }).join('')
-    : '<div style="font-size:0.75rem;color:#4a5a60;font-style:italic">Sem conexões.</div>';
+  // Group by Tipo
+  var groups = {};
+  var ORDER  = ['Local', 'Personagem', 'Fato Histórico'];
+  conns.forEach(function(cn) {
+    var tipo = (nodeData[cn] && nodeData[cn].Tipo) ? nodeData[cn].Tipo : 'Outro';
+    if (!groups[tipo]) groups[tipo] = [];
+    groups[tipo].push(cn);
+  });
+
+  // Build group HTML
+  var groupHtml = '';
+  ORDER.concat(Object.keys(groups).filter(function(t) { return ORDER.indexOf(t) < 0; }))
+    .forEach(function(tipo) {
+      if (!groups[tipo] || groups[tipo].length === 0) return;
+      var m = tipoMeta(tipo);
+      groupHtml +=
+        '<div class="conn-group">' +
+          '<div class="conn-group-header" style="border-left-color:' + m.color + '">' +
+            '<div class="cg-dot" style="background:' + m.color + '"></div>' +
+            '<span class="cg-name">' + m.label + '</span>' +
+            '<span class="cg-latin">' + m.latin + '</span>' +
+            '<span class="cg-count">(' + groups[tipo].length + ')</span>' +
+          '</div>';
+      groups[tipo].forEach(function(cn) {
+        groupHtml += '<div class="conn-item" onclick="selectNode(\'' + cn.replace(/'/g, "\\'") + '\')">' + cn + '</div>';
+      });
+      groupHtml += '</div>';
+    });
+
+  if (!groupHtml) {
+    groupHtml = '<div style="font-size:.75rem;color:#4a5a60;font-style:italic">Sem conexões.</div>';
+  }
 
   var pc = document.getElementById('panel-content');
   pc.innerHTML =
@@ -598,34 +777,31 @@ function showNodeDetail(name) {
     '</div>' +
     (d['Descrição'] ? '<div class="pd-desc">' + d['Descrição'] + '</div>' : '') +
     '<div class="pd-conn-list">' +
-      '<div class="pd-conn-label">Conexões (' + conns.length + ')</div>' +
-      connItems +
+      '<div class="pd-conn-total">Conexões (' + conns.length + ')</div>' +
+      groupHtml +
     '</div>';
 
   pc.style.display = 'flex';
 }
 
+/* ── Select node ──────────────────────────────────────────────────────────── */
 function selectNode(name) {
   var idx = names.indexOf(name);
   if (idx < 0) return;
   selectedRow = idx;
   highlightLabel(idx);
-  drawMatrix(idx);
+  redraw();
   showNodeDetail(name);
 
-  var area      = document.getElementById('canvas-area');
-  var labelSize = parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue('--label-size')
-  ) || 70;
-
-  area.scrollTo({
-    top:  Math.max(0, labelSize + idx * CELL - area.clientHeight / 2),
-    left: Math.max(0, labelSize + idx * CELL - area.clientWidth  / 2),
+  var labelSize = getLabelSize();
+  canvasArea.scrollTo({
+    top:  Math.max(0, labelSize + idx * CELL - canvasArea.clientHeight / 2),
+    left: Math.max(0, labelSize + idx * CELL - canvasArea.clientWidth  / 2),
     behavior: 'smooth'
   });
 }
 
-// ── Search ────────────────────────────────────────────────────────────────────
+/* ── Search ───────────────────────────────────────────────────────────────── */
 document.getElementById('search').addEventListener('input', function() {
   var q = this.value.trim().toLowerCase();
   if (!q || !names.length) return;
