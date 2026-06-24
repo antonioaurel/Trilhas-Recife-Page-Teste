@@ -522,13 +522,30 @@ function computeLabelSize(fontPx) {
     var w = offscreen.measureText(n).width;
     if (w > maxW) maxW = w;
   });
-  return Math.ceil(maxW) + 14; // 14px breathing room
+  return Math.ceil(maxW) + 16;
+}
+
+/* Labels get sparse at small cell sizes so they don't overlap */
+function updateLabelDensity() {
+  var step = Math.max(1, Math.ceil(16 / CELL)); // show every Nth label
+  names.forEach(function(_, i) {
+    var show = (i % step === 0);
+    var cl = document.getElementById('cl-' + i);
+    var rl = document.getElementById('rl-' + i);
+    if (cl) cl.style.color = show ? '' : 'transparent';
+    if (rl) rl.style.color = show ? '' : 'transparent';
+  });
 }
 
 function applyZoom(newCell) {
   CELL = Math.max(MIN_CELL, Math.min(MAX_CELL, newCell));
-  var labelFont = Math.max(7, Math.min(15, CELL * 1.9));
-  var labelSize = names.length ? computeLabelSize(labelFont) : Math.max(120, CELL * 14);
+  // Font: minimum 10px so text is always legible
+  var labelFont = Math.max(10, Math.min(15, CELL * 1.9));
+  // Label area: always wide enough for the longest name at min 10px font,
+  // and never below 220px so it doesn't collapse on zoom-out
+  var labelSize = names.length
+    ? Math.max(220, computeLabelSize(labelFont))
+    : 220;
 
   var root = document.documentElement;
   root.style.setProperty('--cell-size',  CELL      + 'px');
@@ -539,6 +556,7 @@ function applyZoom(newCell) {
   canvas.height = N * CELL;
 
   document.getElementById('zoom-level').textContent = CELL + 'px';
+  if (names.length) updateLabelDensity();
   redraw();
 }
 
@@ -842,6 +860,27 @@ document.getElementById('search').addEventListener('input', function() {
   if (!q || !names.length) return;
   var match = names.find(function(n) { return n.toLowerCase().includes(q); });
   if (match) selectNode(match);
+});
+
+/* ── Keyboard navigation ──────────────────────────────────────────────────── */
+document.addEventListener('keydown', function(e) {
+  if (!N) return;
+  // Don't capture when the user is typing in an input
+  if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    var delta = e.key === 'ArrowDown' ? 1 : -1;
+    var next  = selectedRow < 0
+      ? 0
+      : Math.max(0, Math.min(N - 1, selectedRow + delta));
+    selectNode(names[next]);
+
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    e.preventDefault();
+    var scroll = (e.key === 'ArrowRight' ? 1 : -1) * CELL * 5;
+    canvasArea.scrollLeft += scroll;
+  }
 });
 
 </script>
