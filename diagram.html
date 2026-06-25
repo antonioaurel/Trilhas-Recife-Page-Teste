@@ -379,11 +379,17 @@ d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
     connCount[row.Nome] = 0;
   });
 
+  var nodeNameSet = {};
+  graph.forEach(function(row) { nodeNameSet[row.Nome] = true; });
+
   graph.forEach(function(row) {
     for (var k in row) {
       if (k.startsWith('Intercon') && row[k] !== '') {
-        linksArray.push({ source: row.Nome, target: row[k] });
-        connCount[row.Nome] = (connCount[row.Nome] || 0) + 1;
+        var tgt = row[k].trim();
+        if (tgt && nodeNameSet[tgt]) {   // skip targets that have no matching node
+          linksArray.push({ source: row.Nome, target: tgt });
+          connCount[row.Nome] = (connCount[row.Nome] || 0) + 1;
+        }
       }
     }
   });
