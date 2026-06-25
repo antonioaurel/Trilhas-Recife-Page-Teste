@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fill Rate · Conexões da História</title>
+  <title>Fill Rate · Conexões da Historia do Recife</title>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -187,7 +187,7 @@
 <body>
 
 <nav>
-  <a class="nav-logo" href="index.html">Conexões da História</a>
+  <a class="nav-logo" href="index.html">Conexões da Historia do Recife</a>
   <a class="nav-link" href="diagram.html">Diagrama</a>
   <a class="nav-link" href="matrix.html">Matrix</a>
   <a class="nav-link active" href="stats.html">Fill Rate</a>
@@ -197,7 +197,7 @@
 
 <div class="page-wrap">
 
-  <div class="page-tag">Qualidade dos Dados · Conexões da História</div>
+  <div class="page-tag">Qualidade dos Dados · Conexões da Historia do Recife</div>
   <h1>Fill Rate do <span>Schema</span></h1>
   <p class="page-desc">
     Mede o percentual de preenchimento de cada campo dos registros cadastrados no projeto.
@@ -374,7 +374,7 @@ function card(label, value, desc) {
     '</div>';
 }
 
-fetch('lista-geral-do-mapeamento.csv')
+fetch('../data/lista-geral-do-mapeamento.csv')
   .then(function(r) { return r.text(); })
   .then(function(text) {
     var lines = text.replace(/\r/g,'').split('\n').filter(function(l){ return l.trim(); });

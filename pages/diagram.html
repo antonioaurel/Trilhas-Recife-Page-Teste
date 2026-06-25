@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diagrama · Conexões da História</title>
+  <title>Diagrama · Conexões da Historia do Recife</title>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -38,6 +38,9 @@
       transition: color 0.15s;
     }
     .back-link:hover { color: #e8a838; }
+
+    .sources-link { margin-left: auto; color: #6a7a8a; text-decoration: none; font-size: 0.8rem; white-space: nowrap; transition: color 0.15s; }
+    .sources-link:hover { color: #e8a838; }
 
     .header-title {
       font-size: 0.95rem;
@@ -315,6 +318,7 @@
       <div class="legend-dot" style="background:#9b59b6"></div> Outro
     </div>
   </div>
+  <a class="sources-link" href="sources.html">Fontes</a>
 </header>
 
 <div class="main">
@@ -370,7 +374,7 @@ svg.call(
 var linksArray = [];
 var nodesArray = [];
 
-d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
+d3.csv('../data/lista-geral-do-mapeamento.csv', function(error, graph) {
   if (error) throw error;
   nodesArray = graph;
 

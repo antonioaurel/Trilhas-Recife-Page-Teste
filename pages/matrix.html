@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matrix · Conexões da História</title>
+  <title>Matrix · Conexões da Historia do Recife</title>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -341,7 +341,7 @@
 
 <header>
   <a class="back-link" href="index.html">← Início</a>
-  <div class="header-title">Matrix · <span>Conexões da História</span></div>
+  <div class="header-title">Matrix · <span>Conexões da Historia do Recife</span></div>
   <a class="sources-link" href="sources.html">Fontes</a>
 </header>
 
@@ -460,7 +460,7 @@ window.addEventListener('load',   positionMinimap);
 window.addEventListener('resize', positionMinimap);
 
 /* ── Load CSV ─────────────────────────────────────────────────────────────── */
-d3.csv('lista-geral-do-mapeamento.csv', function(error, graph) {
+d3.csv('../data/lista-geral-do-mapeamento.csv', function(error, graph) {
   if (error) { console.error(error); return; }
 
   graph.sort(function(a, b) { return a.Nome.localeCompare(b.Nome, 'pt-BR'); });
