@@ -4,143 +4,130 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Conexões da História</title>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Product+Sans:wght@400;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+    :root {
+      --g-blue:   #4285F4;
+      --g-red:    #EA4335;
+      --g-yellow: #FBBC05;
+      --g-green:  #34A853;
+    }
+
     body {
-      font-family: 'Raleway', sans-serif;
-      background: #f8f5f0;
-      color: #1a1a1a;
+      font-family: 'Roboto', sans-serif;
+      background: #f1f3f4;
+      color: #202124;
       min-height: 100vh;
     }
 
     /* ── Nav ── */
     nav {
       background: #fff;
-      border-bottom: 1px solid #e4ddd4;
-      padding: 0 2rem;
-      height: 52px;
+      box-shadow: 0 1px 3px rgba(60,64,67,0.15), 0 2px 6px rgba(60,64,67,0.1);
+      padding: 0 1.5rem;
+      height: 56px;
       display: flex;
       align-items: center;
-      gap: 1.75rem;
+      gap: 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
     .nav-logo {
-      font-weight: 700;
-      font-size: 0.88rem;
-      color: #1a1a1a;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: #5f6368;
       text-decoration: none;
       margin-right: auto;
-      letter-spacing: 0.2px;
+      letter-spacing: 0.1px;
     }
+    .nav-logo strong { color: #202124; font-weight: 700; }
     .nav-link {
-      font-size: 0.78rem;
-      color: #999;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #5f6368;
       text-decoration: none;
-      transition: color 0.15s;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
     }
-    .nav-link:hover { color: #b87010; }
+    .nav-link:hover { background: #f1f3f4; color: var(--g-blue); }
 
     /* ── Hero ── */
     .hero {
-      max-width: 680px;
+      max-width: 700px;
       margin: 0 auto;
-      padding: 5rem 2rem 2rem;
+      padding: 4.5rem 2rem 2rem;
       text-align: center;
     }
 
-    .badge {
-      display: inline-block;
-      background: rgba(184,112,16,0.1);
-      border: 1px solid rgba(184,112,16,0.28);
-      color: #b87010;
-      font-size: 0.68rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      padding: 0.35rem 1rem;
-      border-radius: 20px;
-      margin-bottom: 1.75rem;
-    }
-
-    h1 {
-      font-size: 3.2rem;
+    /* Google-style logo */
+    .g-logo {
+      font-family: 'Roboto', sans-serif;
+      font-size: 3.4rem;
       font-weight: 700;
       line-height: 1.1;
-      margin-bottom: 1.25rem;
-      color: #111;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
     }
-    h1 span { color: #b87010; }
+    .g-blue   { color: var(--g-blue); }
+    .g-red    { color: var(--g-red); }
+    .g-yellow { color: var(--g-yellow); }
+    .g-green  { color: var(--g-green); }
 
     .subtitle {
-      font-size: 0.98rem;
-      font-weight: 300;
-      color: #777;
-      line-height: 1.85;
-      margin-bottom: 2.5rem;
-    }
-
-    .categories {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .category {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: #fff;
-      border: 1px solid #e4ddd4;
-      border-radius: 6px;
-      padding: 0.5rem 1rem;
-    }
-    .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-    .cat-text { display: flex; flex-direction: column; gap: 0.1rem; }
-    .cat-name  { font-size: 0.8rem; color: #444; }
-    .cat-latin { font-size: 0.65rem; color: #bbb; font-style: italic; letter-spacing: 0.5px; }
-
-    .hero-quote {
-      font-style: italic;
-      color: #666;
-      font-size: 0.9rem;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #5f6368;
       line-height: 1.8;
-      border-left: 2px solid rgba(184,112,16,0.35);
-      padding-left: 1.25rem;
-      margin-bottom: 1.25rem;
-      text-align: left;
+      margin-bottom: 2rem;
     }
 
     .hero-body {
-      font-size: 0.92rem;
-      color: #555;
+      font-size: 0.9rem;
+      color: #5f6368;
       line-height: 1.8;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
     }
 
     .hero-meta {
-      font-size: 0.76rem;
-      color: #aaa;
+      font-size: 0.78rem;
+      color: #80868b;
       line-height: 1.7;
       margin-bottom: 1rem;
     }
-    .hero-meta em { color: #999; font-style: normal; font-weight: 600; }
+    .hero-meta em { color: #5f6368; font-style: normal; font-weight: 500; }
+
+    /* Google color dots row */
+    .g-dots {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      margin-bottom: 2.25rem;
+    }
+    .g-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
 
     /* ── Cards section ── */
     .explore {
       max-width: 1340px;
       margin: 0 auto;
-      padding: 0 2rem 6rem;
+      padding: 0 1.5rem 5rem;
     }
 
     .section-label {
-      font-size: 0.62rem;
+      font-size: 0.72rem;
+      font-weight: 500;
       text-transform: uppercase;
-      letter-spacing: 3px;
-      color: #ccc;
+      letter-spacing: 2.5px;
+      color: #80868b;
       text-align: center;
-      margin-bottom: 2rem;
-      margin-top: 3rem;
+      margin-bottom: 1.5rem;
+      margin-top: 1rem;
     }
 
     .cards-grid {
@@ -153,20 +140,40 @@
 
     .viz-card {
       background: #fff;
-      border: 1px solid #e4ddd4;
-      border-radius: 14px;
+      border-radius: 8px;
       overflow: hidden;
       text-decoration: none;
       color: inherit;
       display: flex;
       flex-direction: column;
-      transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+      box-shadow: 0 1px 2px rgba(60,64,67,0.1), 0 2px 6px rgba(60,64,67,0.1);
+      transition: box-shadow 0.2s, transform 0.2s;
     }
     .viz-card:hover {
-      border-color: #b87010;
-      box-shadow: 0 6px 28px rgba(184,112,16,0.13);
+      box-shadow: 0 4px 12px rgba(60,64,67,0.18), 0 8px 24px rgba(60,64,67,0.12);
       transform: translateY(-2px);
     }
+
+    /* Per-card accent colors on hover */
+    .card-blue:hover  .card-tag { color: var(--g-blue); }
+    .card-red:hover   .card-tag { color: var(--g-red); }
+    .card-yellow:hover .card-tag { color: #e0a200; }
+    .card-green:hover  .card-tag { color: var(--g-green); }
+
+    .card-blue:hover  .card-title { color: var(--g-blue); }
+    .card-red:hover   .card-title { color: var(--g-red); }
+    .card-yellow:hover .card-title { color: #e0a200; }
+    .card-green:hover  .card-title { color: var(--g-green); }
+
+    /* top accent stripe */
+    .card-stripe {
+      height: 4px;
+      flex-shrink: 0;
+    }
+    .s-blue   { background: var(--g-blue); }
+    .s-red    { background: var(--g-red); }
+    .s-yellow { background: var(--g-yellow); }
+    .s-green  { background: var(--g-green); }
 
     /* ── Thumbnail area ── */
     .card-thumb {
@@ -183,7 +190,7 @@
 
     /* ── Card body ── */
     .card-body {
-      padding: 1.5rem;
+      padding: 1.4rem;
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -192,33 +199,37 @@
     }
 
     .card-tag {
-      font-size: 0.6rem;
+      font-size: 0.62rem;
+      font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: #b87010;
+      color: #80868b;
       margin-bottom: 0.4rem;
+      transition: color 0.2s;
     }
 
     .card-title {
-      font-size: 1.02rem;
+      font-size: 1rem;
       font-weight: 700;
-      color: #111;
+      color: #202124;
       margin-bottom: 0.5rem;
+      transition: color 0.2s;
     }
 
     .card-desc {
       font-size: 0.78rem;
-      color: #888;
+      color: #5f6368;
       line-height: 1.65;
       margin-bottom: 1.25rem;
     }
-    .card-desc strong { color: #666; font-weight: 600; }
+    .card-desc strong { color: #3c4043; font-weight: 500; }
 
     .how-label {
       font-size: 0.58rem;
+      font-weight: 500;
       text-transform: uppercase;
       letter-spacing: 2px;
-      color: #ccc;
+      color: #80868b;
       margin-bottom: 0.6rem;
     }
 
@@ -235,7 +246,7 @@
       display: flex;
       gap: 0.6rem;
       font-size: 0.74rem;
-      color: #999;
+      color: #5f6368;
       line-height: 1.5;
       text-align: left;
     }
@@ -244,34 +255,34 @@
       flex-shrink: 0;
       width: 17px;
       height: 17px;
-      background: rgba(184,112,16,0.08);
-      border: 1px solid rgba(184,112,16,0.18);
+      background: #f1f3f4;
       border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.64rem;
-      color: #b87010;
+      color: #5f6368;
       margin-top: 1px;
     }
 
     /* ── Footer ── */
     footer {
       font-size: 0.75rem;
-      color: #ccc;
+      color: #80868b;
       text-align: center;
-      padding: 2rem;
-      border-top: 1px solid #e8e0d4;
+      padding: 1.5rem 2rem;
+      border-top: 1px solid #e8eaed;
+      background: #fff;
     }
-    footer a { color: #bbb; text-decoration: none; }
-    footer a:hover { color: #b87010; }
+    footer a { color: #5f6368; text-decoration: none; }
+    footer a:hover { color: var(--g-blue); text-decoration: underline; }
   </style>
 </head>
 <body>
 
 <!-- Nav -->
 <nav>
-  <a class="nav-logo" href="index.html">Conexões da História</a>
+  <a class="nav-logo" href="index.html"><strong>Conexões</strong> da História</a>
   <a class="nav-link" href="diagram.html">Diagrama</a>
   <a class="nav-link" href="matrix.html">Matrix</a>
   <a class="nav-link" href="stats.html">Fill Rate</a>
@@ -281,8 +292,18 @@
 
 <!-- Hero -->
 <div class="hero">
-  <div class="badge">D3.js · Recife · Pernambuco</div>
-  <h1>Conexões <span>da História</span></h1>
+  <div class="g-logo">
+    <span class="g-blue">C</span><span class="g-red">o</span><span class="g-yellow">n</span><span class="g-blue">e</span><span class="g-green">x</span><span class="g-red">õ</span><span class="g-blue">e</span><span class="g-yellow">s</span>
+    <span style="color:#5f6368;font-weight:300"> da </span><span class="g-green">H</span><span class="g-red">i</span><span class="g-yellow">s</span><span class="g-blue">t</span><span class="g-green">ó</span><span class="g-red">r</span><span class="g-yellow">i</span><span class="g-blue">a</span>
+  </div>
+
+  <div class="g-dots">
+    <div class="g-dot" style="background:var(--g-blue)"></div>
+    <div class="g-dot" style="background:var(--g-red)"></div>
+    <div class="g-dot" style="background:var(--g-yellow)"></div>
+    <div class="g-dot" style="background:var(--g-green)"></div>
+  </div>
+
   <p class="subtitle">
     Um mapa interativo das interconexões entre locais históricos, personagens e eventos
     que moldaram o Recife e Pernambuco. Descubra como lugares e momentos aparentemente
@@ -302,7 +323,6 @@
     Fontes principais: <em>Trilhas do Recife</em>, <em>Ruas do Recife</em>
     e <em>Pernambucanidade</em>.
   </p>
-
 </div>
 
 <!-- Cards -->
@@ -311,12 +331,11 @@
   <div class="cards-grid">
 
     <!-- ── Diagrama ── -->
-    <a class="viz-card" href="diagram.html">
+    <a class="viz-card card-blue" href="diagram.html">
+      <div class="card-stripe s-blue"></div>
       <div class="card-thumb">
-        <!-- SVG thumbnail: force-directed graph -->
         <svg viewBox="0 0 440 248" xmlns="http://www.w3.org/2000/svg">
           <rect width="440" height="248" fill="#0f1923"/>
-          <!-- edges -->
           <g stroke="#1d3544" stroke-width="1.3" fill="none">
             <line x1="220" y1="124" x2="100" y2="64"/>
             <line x1="220" y1="124" x2="338" y2="74"/>
@@ -333,24 +352,21 @@
             <line x1="393" y1="106" x2="420" y2="150"/>
             <line x1="198" y1="202" x2="160" y2="232"/>
           </g>
-          <!-- hub node -->
-          <circle cx="220" cy="124" r="19" fill="#4a90d9"/>
-          <!-- level-1 nodes -->
-          <circle cx="100" cy="64"  r="11" fill="#e8833a"/>
-          <circle cx="338" cy="74"  r="13" fill="#5cb85c"/>
-          <circle cx="118" cy="186" r="9"  fill="#4a90d9" opacity="0.85"/>
-          <circle cx="330" cy="178" r="10" fill="#e8833a" opacity="0.85"/>
-          <circle cx="198" cy="202" r="8"  fill="#5cb85c" opacity="0.8"/>
-          <!-- level-2 nodes -->
-          <circle cx="46"  cy="96"  r="6" fill="#e8833a" opacity="0.7"/>
-          <circle cx="76"  cy="26"  r="5" fill="#5cb85c" opacity="0.65"/>
-          <circle cx="393" cy="106" r="7" fill="#4a90d9" opacity="0.7"/>
-          <circle cx="364" cy="30"  r="5" fill="#e8833a" opacity="0.65"/>
-          <circle cx="66"  cy="216" r="5" fill="#4a90d9" opacity="0.6"/>
-          <circle cx="386" cy="200" r="6" fill="#5cb85c" opacity="0.65"/>
-          <circle cx="20"  cy="132" r="4" fill="#e8833a" opacity="0.55"/>
-          <circle cx="420" cy="150" r="4" fill="#4a90d9" opacity="0.55"/>
-          <circle cx="160" cy="232" r="4" fill="#5cb85c" opacity="0.55"/>
+          <circle cx="220" cy="124" r="19" fill="#4285F4"/>
+          <circle cx="100" cy="64"  r="11" fill="#EA4335"/>
+          <circle cx="338" cy="74"  r="13" fill="#34A853"/>
+          <circle cx="118" cy="186" r="9"  fill="#4285F4" opacity="0.85"/>
+          <circle cx="330" cy="178" r="10" fill="#EA4335" opacity="0.85"/>
+          <circle cx="198" cy="202" r="8"  fill="#FBBC05" opacity="0.8"/>
+          <circle cx="46"  cy="96"  r="6" fill="#EA4335" opacity="0.7"/>
+          <circle cx="76"  cy="26"  r="5" fill="#34A853" opacity="0.65"/>
+          <circle cx="393" cy="106" r="7" fill="#4285F4" opacity="0.7"/>
+          <circle cx="364" cy="30"  r="5" fill="#EA4335" opacity="0.65"/>
+          <circle cx="66"  cy="216" r="5" fill="#FBBC05" opacity="0.6"/>
+          <circle cx="386" cy="200" r="6" fill="#34A853" opacity="0.65"/>
+          <circle cx="20"  cy="132" r="4" fill="#EA4335" opacity="0.55"/>
+          <circle cx="420" cy="150" r="4" fill="#4285F4" opacity="0.55"/>
+          <circle cx="160" cy="232" r="4" fill="#FBBC05" opacity="0.55"/>
         </svg>
       </div>
       <div class="card-body">
@@ -360,7 +376,7 @@
         <div class="how-label">Como usar</div>
         <ul class="how-steps">
           <li><div class="step-icon">⊕</div><span>Roda do mouse para zoom; arraste o fundo para navegar</span></li>
-          <li><div class="step-icon">○</div><span>Cor indica categoria: azul = Local, laranja = Personagem, verde = Evento</span></li>
+          <li><div class="step-icon">○</div><span>Cor indica categoria: azul = Local, vermelho = Personagem, verde = Evento</span></li>
           <li><div class="step-icon">✦</div><span>Clique num nó para ver descrição, imagem e conexões no painel</span></li>
           <li><div class="step-icon">⊙</div><span>No painel, clique numa conexão para saltar diretamente a ela</span></li>
           <li><div class="step-icon">⠿</div><span>Arraste nós individualmente para reorganizar o layout</span></li>
@@ -369,18 +385,14 @@
     </a>
 
     <!-- ── Matrix ── -->
-    <a class="viz-card" href="matrix.html">
+    <a class="viz-card card-red" href="matrix.html">
+      <div class="card-stripe s-red"></div>
       <div class="card-thumb">
-        <!-- SVG thumbnail: adjacency matrix -->
         <svg viewBox="0 0 440 248" xmlns="http://www.w3.org/2000/svg">
           <rect width="440" height="248" fill="#0f1923"/>
-          <!-- frozen top row -->
           <rect x="55" y="0"  width="385" height="32" fill="#111b27"/>
-          <!-- frozen left col -->
           <rect x="0"  y="32" width="55"  height="216" fill="#111b27"/>
-          <!-- corner -->
           <rect x="0"  y="0"  width="55"  height="32" fill="#131c28"/>
-          <!-- grid lines -->
           <g stroke="#1a2d3d" stroke-width="0.5" fill="none">
             <line x1="55"  y1="60"  x2="440" y2="60"/>
             <line x1="55"  y1="88"  x2="440" y2="88"/>
@@ -403,7 +415,6 @@
             <line x1="391" y1="32"  x2="391" y2="248"/>
             <line x1="419" y1="32"  x2="419" y2="248"/>
           </g>
-          <!-- row label stubs -->
           <g fill="#2a3a4a">
             <rect x="5" y="44"  width="44" height="4" rx="2"/>
             <rect x="5" y="72"  width="36" height="4" rx="2"/>
@@ -413,7 +424,6 @@
             <rect x="5" y="184" width="38" height="4" rx="2"/>
             <rect x="5" y="212" width="30" height="4" rx="2"/>
           </g>
-          <!-- col label stubs (diagonal) -->
           <g fill="#2a3a4a">
             <rect x="66"  y="8" width="4" height="16" rx="2" transform="rotate(-45,68,16)"/>
             <rect x="94"  y="8" width="4" height="14" rx="2" transform="rotate(-45,96,15)"/>
@@ -429,8 +439,7 @@
             <rect x="374" y="8" width="4" height="18" rx="2" transform="rotate(-45,376,17)"/>
             <rect x="402" y="8" width="4" height="14" rx="2" transform="rotate(-45,404,15)"/>
           </g>
-          <!-- connection dots (golden) -->
-          <g fill="#e8a838">
+          <g fill="#EA4335">
             <circle cx="97"  cy="46"  r="3.5"/>
             <circle cx="181" cy="46"  r="3.5"/>
             <circle cx="125" cy="74"  r="3.5"/>
@@ -455,10 +464,10 @@
       <div class="card-body">
         <div class="card-tag">Matrix de adjacência</div>
         <h2 class="card-title">Mapa completo de todos os pares</h2>
-        <p class="card-desc">Visualização 564×564 de todos os pares de nós. Cada ponto dourado é uma conexão entre dois registros históricos.</p>
+        <p class="card-desc">Visualização 564×564 de todos os pares de nós. Cada ponto vermelho é uma conexão entre dois registros históricos.</p>
         <div class="how-label">Como usar</div>
         <ul class="how-steps">
-          <li><div class="step-icon">▦</div><span>Ponto dourado = conexão entre a linha e a coluna</span></li>
+          <li><div class="step-icon">▦</div><span>Ponto = conexão entre a linha e a coluna</span></li>
           <li><div class="step-icon">⊕</div><span>Botões + / − ou Ctrl + roda do mouse para zoom</span></li>
           <li><div class="step-icon">✦</div><span>Clique numa linha ou célula para destacar as conexões daquele nó</span></li>
           <li><div class="step-icon">🔍</div><span>Barra de busca para encontrar e centralizar um nó</span></li>
@@ -468,13 +477,12 @@
     </a>
 
     <!-- ── Fill Rate / Stats ── -->
-    <a class="viz-card" href="stats.html">
+    <a class="viz-card card-yellow" href="stats.html">
+      <div class="card-stripe s-yellow"></div>
       <div class="card-thumb">
-        <!-- SVG thumbnail: bullet chart (light bg) -->
         <svg viewBox="0 0 440 248" xmlns="http://www.w3.org/2000/svg">
-          <rect width="440" height="248" fill="#f8f5f0"/>
-          <!-- field labels (right-aligned at x=115) -->
-          <g font-family="Raleway, sans-serif" font-size="11" fill="#888" text-anchor="end">
+          <rect width="440" height="248" fill="#f8f9fa"/>
+          <g font-family="Roboto, sans-serif" font-size="11" fill="#5f6368" text-anchor="end">
             <text x="112" y="48">Nome</text>
             <text x="112" y="86">Sub-Tipo</text>
             <text x="112" y="124">Local</text>
@@ -482,8 +490,7 @@
             <text x="112" y="200">Descrição</text>
             <text x="112" y="234">Intercon. 1</text>
           </g>
-          <!-- background bars (total) -->
-          <g fill="#ede8e0">
+          <g fill="#e8eaed">
             <rect x="118" y="36"  width="280" height="16" rx="3"/>
             <rect x="118" y="74"  width="280" height="16" rx="3"/>
             <rect x="118" y="112" width="280" height="16" rx="3"/>
@@ -491,29 +498,13 @@
             <rect x="118" y="188" width="280" height="16" rx="3"/>
             <rect x="118" y="222" width="280" height="16" rx="3"/>
           </g>
-          <!-- zone tints on bars -->
-          <g opacity="0.5">
-            <rect x="118" y="36"  width="140" height="16" rx="3" fill="rgba(210,60,60,0.15)"/>
-            <rect x="118" y="74"  width="140" height="16" rx="3" fill="rgba(210,60,60,0.15)"/>
-            <rect x="258" y="74"  width="84"  height="16" fill="rgba(210,160,30,0.2)"/>
-            <rect x="118" y="112" width="140" height="16" rx="3" fill="rgba(210,60,60,0.15)"/>
-            <rect x="258" y="112" width="84"  height="16" fill="rgba(210,160,30,0.2)"/>
-          </g>
-          <!-- filled bars (amber) -->
-          <!-- Nome 100%: 280 -->
-          <rect x="118" y="38"  width="280" height="12" rx="2" fill="#c07820"/>
-          <!-- Sub-Tipo 64%: 179 -->
-          <rect x="118" y="76"  width="179" height="12" rx="2" fill="#c07820"/>
-          <!-- Local 58%: 162 -->
-          <rect x="118" y="114" width="162" height="12" rx="2" fill="#c07820"/>
-          <!-- Imagem 95%: 266 -->
-          <rect x="118" y="152" width="266" height="12" rx="2" fill="#c07820"/>
-          <!-- Descrição 98%: 274 -->
-          <rect x="118" y="190" width="274" height="12" rx="2" fill="#c07820"/>
-          <!-- Intercon.1 97%: 272 -->
-          <rect x="118" y="224" width="272" height="12" rx="2" fill="#c07820"/>
-          <!-- target line at 80%: x = 118 + 280*0.8 = 342 -->
-          <g stroke="rgba(100,100,100,0.4)" stroke-width="1.5">
+          <rect x="118" y="38"  width="280" height="12" rx="2" fill="#FBBC05"/>
+          <rect x="118" y="76"  width="179" height="12" rx="2" fill="#FBBC05"/>
+          <rect x="118" y="114" width="162" height="12" rx="2" fill="#FBBC05"/>
+          <rect x="118" y="152" width="266" height="12" rx="2" fill="#FBBC05"/>
+          <rect x="118" y="190" width="274" height="12" rx="2" fill="#FBBC05"/>
+          <rect x="118" y="224" width="272" height="12" rx="2" fill="#FBBC05"/>
+          <g stroke="rgba(100,100,100,0.35)" stroke-width="1.5">
             <line x1="342" y1="34"  x2="342" y2="52"/>
             <line x1="342" y1="72"  x2="342" y2="90"/>
             <line x1="342" y1="110" x2="342" y2="128"/>
@@ -521,8 +512,7 @@
             <line x1="342" y1="186" x2="342" y2="204"/>
             <line x1="342" y1="220" x2="342" y2="238"/>
           </g>
-          <!-- pct labels -->
-          <g font-family="Raleway, sans-serif" font-size="10" font-weight="600" fill="#666" text-anchor="start">
+          <g font-family="Roboto, sans-serif" font-size="10" font-weight="500" fill="#5f6368" text-anchor="start">
             <text x="402" y="48">100%</text>
             <text x="402" y="86">64%</text>
             <text x="402" y="124">58%</text>
@@ -535,10 +525,10 @@
       <div class="card-body">
         <div class="card-tag">Qualidade dos dados</div>
         <h2 class="card-title">Fill Rate do Schema</h2>
-        <p class="card-desc">Bullet chart mostrando a cobertura de cada campo dos 564 registros: total de preenchidos, total de vazios e percentual. Utilizado para <strong>monitorar a qualidade dos dados</strong> usados e orientar ações corretivas de curadoria.</p>
+        <p class="card-desc">Bullet chart mostrando a cobertura de cada campo dos 564 registros: total de preenchidos, total de vazios e percentual. Utilizado para <strong>monitorar a qualidade dos dados</strong> e orientar ações de curadoria.</p>
         <div class="how-label">Como usar</div>
         <ul class="how-steps">
-          <li><div class="step-icon">▌</div><span>Barra âmbar = registros preenchidos; fundo claro = registros vazios</span></li>
+          <li><div class="step-icon">▌</div><span>Barra amarela = registros preenchidos; fundo claro = registros vazios</span></li>
           <li><div class="step-icon">│</div><span>Linha vertical cinza = meta de 80% de preenchimento</span></li>
           <li><div class="step-icon">≡</div><span>Campos core (Nome, Tipo, Local…) e interconexões em seções separadas</span></li>
         </ul>
@@ -546,17 +536,13 @@
     </a>
 
     <!-- ── Mapa ── -->
-    <a class="viz-card" href="https://www.google.com.br/maps/d/u/0/viewer?mid=1eOwVJYlWOV6PLI06K-h-ofmkJXyrgrnj&ll=-8.06055276702706%2C-34.882075024350215&z=15" target="_blank" rel="noopener">
+    <a class="viz-card card-green" href="https://www.google.com.br/maps/d/u/0/viewer?mid=1eOwVJYlWOV6PLI06K-h-ofmkJXyrgrnj&ll=-8.06055276702706%2C-34.882075024350215&z=15" target="_blank" rel="noopener">
+      <div class="card-stripe s-green"></div>
       <div class="card-thumb">
-        <!-- SVG thumbnail: schematic city map -->
         <svg viewBox="0 0 440 248" xmlns="http://www.w3.org/2000/svg">
-          <!-- land background -->
           <rect width="440" height="248" fill="#ddd4be"/>
-          <!-- ocean / sea (east side) -->
           <path d="M375,0 Q405,62 415,124 Q410,184 392,248 L440,248 L440,0 Z" fill="#a8c8dc"/>
-          <!-- Capibaribe river -->
           <path d="M0,82 Q55,72 98,92 Q148,114 202,102 Q254,88 296,108 Q336,124 370,112" stroke="#7fb2cc" stroke-width="7" fill="none" stroke-linecap="round"/>
-          <!-- city blocks -->
           <g fill="#cdc4aa" stroke="#bfb89a" stroke-width="0.5">
             <rect x="62"  y="40"  width="42" height="26"/>
             <rect x="112" y="36"  width="36" height="22"/>
@@ -576,7 +562,6 @@
             <rect x="314" y="140" width="38" height="24"/>
             <rect x="316" y="170" width="36" height="22"/>
           </g>
-          <!-- road grid -->
           <g stroke="#e8e0cc" stroke-width="2.5" fill="none">
             <line x1="58"  y1="0"   x2="58"  y2="248"/>
             <line x1="160" y1="0"   x2="160" y2="248"/>
@@ -587,9 +572,7 @@
             <line x1="0"   y1="50"  x2="375" y2="50"/>
             <line x1="0"   y1="200" x2="375" y2="200"/>
           </g>
-          <!-- map pins -->
-          <g fill="#e03030">
-            <!-- pin = filled circle + small downward triangle -->
+          <g fill="#34A853">
             <circle cx="98"  cy="67"  r="7"/>
             <polygon points="98,76 93,61 103,61"/>
             <circle cx="218" cy="56"  r="7"/>
@@ -603,7 +586,6 @@
             <circle cx="190" cy="172" r="6"/>
             <polygon points="190,180 185,166 195,166"/>
           </g>
-          <!-- pin highlight dots (white centre) -->
           <g fill="white" opacity="0.5">
             <circle cx="98"  cy="65"  r="2.5"/>
             <circle cx="218" cy="54"  r="2.5"/>
